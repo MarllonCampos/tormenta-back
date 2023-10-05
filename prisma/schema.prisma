@@ -1,0 +1,153 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model attribute {
+  id                Int                 @id @default(autoincrement())
+  name              String?             @db.Text
+  attributes_threat attributes_threat[]
+}
+
+model attributes_threat {
+  threat_id    Int?
+  attribute_id Int?
+  value        String     @default(dbgenerated("(_utf8mb4\\'+0\\')")) @db.Text
+  created_at   DateTime   @default(dbgenerated("(now())")) @db.Timestamp(0)
+  updated_at   DateTime   @default(dbgenerated("(now())")) @db.Timestamp(0)
+  id           Int        @id @default(autoincrement())
+  threat       threat?    @relation(fields: [threat_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "attributes_threat_ibfk_1")
+  attribute    attribute? @relation(fields: [attribute_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "attributes_threat_ibfk_2")
+
+  @@index([attribute_id], map: "attribute_id")
+  @@index([threat_id], map: "threat_id")
+}
+
+model combatmoves {
+  id          Int     @id @default(autoincrement())
+  threat_id   Int?
+  title       String? @db.Text
+  description String? @db.Text
+  threat      threat? @relation(fields: [threat_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "combatmoves_ibfk_1")
+
+  @@index([threat_id], map: "threat_id")
+}
+
+model combatrole {
+  id         Int      @id @default(autoincrement())
+  name       String?  @db.Text
+  created_at DateTime @default(dbgenerated("(now())")) @db.Timestamp(0)
+  updated_at DateTime @default(dbgenerated("(now())")) @db.Timestamp(0)
+  threat     threat[]
+}
+
+model creaturesize {
+  id         Int      @id @default(autoincrement())
+  name       String?  @db.Text
+  created_at DateTime @default(dbgenerated("(now())")) @db.Timestamp(0)
+  updated_at DateTime @default(dbgenerated("(now())")) @db.Timestamp(0)
+  threat     threat[]
+}
+
+model creaturetype {
+  id         Int      @id @default(autoincrement())
+  name       String   @db.Text
+  created_at DateTime @default(dbgenerated("(now())")) @db.Timestamp(0)
+  updated_at DateTime @default(dbgenerated("(now())")) @db.Timestamp(0)
+  threat     threat[]
+}
+
+model damagetype {
+  id     Int      @id @default(autoincrement())
+  type   String?  @db.Text
+  weapon weapon[]
+}
+
+model holdtype {
+  id     Int      @id @default(autoincrement())
+  type   String?  @db.Text
+  weapon weapon[]
+}
+
+model mastery {
+  id            Int      @id @default(autoincrement())
+  type          String?  @db.Text
+  trained       Boolean? @default(false)
+  armor_penalty Boolean? @default(false)
+}
+
+model range {
+  id     Int      @id @default(autoincrement())
+  type   String?  @db.Text
+  weapon weapon[]
+}
+
+model threat {
+  id                Int                 @id @default(autoincrement())
+  name              String              @db.Text
+  created_at        DateTime            @default(dbgenerated("(now())")) @db.Timestamp(0)
+  updated_at        DateTime            @default(dbgenerated("(now())")) @db.Timestamp(0)
+  difficulty        Float               @db.Float
+  description       String?             @db.Text
+  combat_role       Int?
+  creature_size     Int?
+  creature_type     Int?
+  health_points     Int
+  mana_points       Int                 @default(0)
+  movement          String              @db.Text
+  treasure          String?             @db.Text
+  img               String?             @db.Text
+  default           Boolean
+  equipment         String?             @db.Text
+  attributes_threat attributes_threat[]
+  combatmoves       combatmoves[]
+  creaturetype      creaturetype?       @relation(fields: [creature_type], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "threat_ibfk_1")
+  creaturesize      creaturesize?       @relation(fields: [creature_size], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "threat_ibfk_2")
+  combatrole        combatrole?         @relation(fields: [combat_role], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "threat_ibfk_3")
+
+  @@index([combat_role], map: "combat_role")
+  @@index([creature_size], map: "creature_size")
+  @@index([creature_type], map: "creature_type")
+}
+
+model trait {
+  id   Int     @id @default(autoincrement())
+  name String? @db.Text
+}
+
+model weapon {
+  id             Int             @id @default(autoincrement())
+  price          Float?          @db.Float
+  damage         String?         @db.Text
+  critical       String?         @db.Text
+  melee          Boolean?
+  attack_range   Int?
+  damage_type    Int?
+  spaces         Float?          @db.Float
+  category       Int?
+  hold_type      Int?
+  created_at     DateTime        @default(dbgenerated("(now())")) @db.Timestamp(0)
+  updated_at     DateTime        @default(dbgenerated("(now())")) @db.Timestamp(0)
+  default        Boolean         @default(true)
+  name           String          @db.Text
+  img            String?         @db.Text
+  range          range?          @relation(fields: [attack_range], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "weapon_ibfk_1")
+  damagetype     damagetype?     @relation(fields: [damage_type], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "weapon_ibfk_2")
+  weaponcategory weaponcategory? @relation(fields: [category], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "weapon_ibfk_3")
+  holdtype       holdtype?       @relation(fields: [hold_type], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "weapon_ibfk_4")
+
+  @@index([attack_range], map: "attack_range")
+  @@index([category], map: "category")
+  @@index([damage_type], map: "damage_type")
+  @@index([hold_type], map: "hold_type")
+}
+
+model weaponcategory {
+  id     Int      @id @default(autoincrement())
+  type   String?  @db.Text
+  weapon weapon[]
+}
