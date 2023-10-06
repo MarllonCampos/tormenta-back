@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { WeaponRoutes } from './Weapons/weaponroute';
+import { WeaponRoutes } from './Weapon/weapon.route';
 
 const routes = Router();
 
