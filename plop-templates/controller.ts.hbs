@@ -1,0 +1,28 @@
+import { PrismaClient } from '@prisma/client';
+import { Request, Response } from 'express';
+
+class {{pascalCase name}}Controller {
+  private prisma: PrismaClient;
+  constructor() {
+    this.prisma = new PrismaClient();
+  }
+
+  index = async (req: Request, res: Response) => {
+    const {{camelCase name}} = await this.prisma.{{lowerCaseNoSpaces name}}.findMany();
+    return res.json({{camelCase name}});
+  };
+  async show(req: Request, res: Response) {
+    return null;
+  }
+  async store(req: Request, res: Response) {
+    return null;
+  }
+  async update(req: Request, res: Response) {
+    return null;
+  }
+  async delete(req: Request, res: Response) {
+    return null;
+  }
+}
+
+export default {{pascalCase name}}Controller;

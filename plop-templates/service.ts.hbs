@@ -1,0 +1,29 @@
+import { Prisma, PrismaClient } from '@prisma/client';
+import { DefaultArgs } from '@prisma/client/runtime/library';
+
+class {{pascalCase name}}Service {
+  private repository: Prisma.{{lowerCaseNoSpaces name}}Delegate<DefaultArgs>;
+  constructor() {
+    const prisma = new PrismaClient();
+    this.repository = prisma.{{lowerCaseNoSpaces name}};
+  }
+
+  index = async () => {
+    const {{lowerCaseNoSpaces name}} = await this.repository.findMany();
+    return {{lowerCaseNoSpaces name}};
+  };
+  async show(req: Request, res: Response) {
+    return null;
+  }
+  async create(req: Request, res: Response) {
+    return null;
+  }
+  async update(req: Request, res: Response) {
+    return null;
+  }
+  async delete(req: Request, res: Response) {
+    return null;
+  }
+}
+
+export default {{pascalCase name}}Service;

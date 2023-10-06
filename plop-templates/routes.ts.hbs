@@ -1,0 +1,18 @@
+import { Router } from 'express';
+import {{pascalCase name}}Controller from './controller';
+
+const {{pascalCase name}}Routes = Router();
+
+const controller = new {{pascalCase name}}Controller();
+
+{{pascalCase name}}Routes.get('/', controller.index);
+
+{{pascalCase name}}Routes.get('/:id',controller.show);
+
+{{pascalCase name}}Routes.post('/',controller.store);
+
+{{pascalCase name}}Routes.patch('/', controller.update);
+
+{{pascalCase name}}Routes.delete('/', controller.delete);
+
+export { {{pascalCase name}}Routes };
