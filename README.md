@@ -26,6 +26,11 @@ Este é o backend para o projeto Tormenta, uma aplicação que gerencia ameaças
 ```
   npm start
 ```
+
+**Executando o Servidor Localmente para Desenvolvimento**
+```
+  npm run dev
+```
   O servidor estará rodando em http://localhost:3000 por padrão
   
 **Documentação da API**
