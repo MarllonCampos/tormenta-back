@@ -3,8 +3,7 @@ import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import { configDotenv } from 'dotenv';
 import { routes } from './routes';
-import swaggerDocument from './swagger.json';
-import swaggerJSDoc from 'swagger-jsdoc';
+import swaggerSpecs from './swagger';
 
 configDotenv();
 const app = express();
@@ -15,8 +14,7 @@ app.use(routes);
 app.get('/', (_, res: Response) => {
   res.send('Server Working Just Fine');
 });
-const specs = swaggerJSDoc(swaggerDocument);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 app.listen(process.env.PORT, () => {
   console.log(`🔥 Server Running on Port: ${process.env.PORT} 🔥`);
 });
