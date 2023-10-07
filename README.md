@@ -2,7 +2,7 @@
 
 **Descrição do Projeto**
 
-Este é o backend para o projeto Tormenta, uma aplicação que gerencia ameaças (monstros, criaturas, etc.) para jogos de RPG.
+Este é o backend para o projeto Tormenta, uma aplicação que gerencia ameaças (monstros, criaturas, etc.) para um jogo utilizando o Sistema de Tormenta20.
 
 ## **Instruções de Início Rápido**
 
