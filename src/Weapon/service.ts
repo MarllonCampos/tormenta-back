@@ -3,25 +3,47 @@ import { DefaultArgs } from '@prisma/client/runtime/library';
 
 class WeaponService {
   private repository: Prisma.weaponDelegate<DefaultArgs>;
+  private defaultWeaponObject = {
+    // TODO -> Creates a DTO to change the response to user using some ZOD lib
+    name: true,
+    damage: true,
+    critical: true,
+    melee: true,
+    spaces: true,
+    default: true,
+    img: true,
+  };
   constructor() {
     const prisma = new PrismaClient();
     this.repository = prisma.weapon;
   }
 
-  index = async () => {
-    const weapons = await this.repository.findMany();
+  async index() {
+    const weapons = await this.repository.findMany({
+      select: {
+        ...this.defaultWeaponObject,
+      },
+    });
     return weapons;
-  };
-  async show(req: Request, res: Response) {
+  }
+
+  async show(id: number) {
+    return await this.repository.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        ...this.defaultWeaponObject,
+      },
+    });
+  }
+  async create() {
     return null;
   }
-  async create(req: Request, res: Response) {
+  async update() {
     return null;
   }
-  async update(req: Request, res: Response) {
-    return null;
-  }
-  async delete(req: Request, res: Response) {
+  async delete() {
     return null;
   }
 }
