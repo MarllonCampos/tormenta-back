@@ -144,11 +144,6 @@ model weapon {
   damagetype     damagetype?     @relation(fields: [damage_type], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "weapon_ibfk_2")
   weaponcategory weaponcategory? @relation(fields: [category], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "weapon_ibfk_3")
   holdtype       holdtype?       @relation(fields: [hold_type], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "weapon_ibfk_4")
-
-  @@index([attack_range], map: "attack_range")
-  @@index([category], map: "category")
-  @@index([damage_type], map: "damage_type")
-  @@index([hold_type], map: "hold_type")
 }
 
 model weaponcategory {
