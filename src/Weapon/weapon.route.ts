@@ -7,7 +7,7 @@ const controller = new WeaponController();
 
 /**
  * @swagger
- * /weapons:
+ * /weapon:
  *   get:
  *     summary: Todas as Armas
  *     description: Retorna um array de armas cadastradas
@@ -21,16 +21,9 @@ const controller = new WeaponController();
  *                 damage: 1d4
  *                 critical: 19
  *                 melee: true
- *                 range:
- *                   type: Curto
- *                 damagetype:
- *                   type: Perfuração
  *                 spaces: 1
- *                 weaponcategory:
- *                   type: Arma Simples
- *                 holdtype:
- *                   type: Leve
  *                 default: true
+ *                 img: null
  */
 WeaponRoutes.get('/', controller.index);
 
