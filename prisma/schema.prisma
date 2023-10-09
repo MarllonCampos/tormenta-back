@@ -125,25 +125,25 @@ model trait {
 }
 
 model weapon {
-  id             Int             @id @default(autoincrement())
-  price          Float?          @db.Float
-  damage         String?         @db.Text
-  critical       String?         @db.Text
-  melee          Boolean?
-  attack_range   Int?
-  damage_type    Int?
-  spaces         Float?          @db.Float
-  category       Int?
-  hold_type      Int?
-  created_at     DateTime        @default(dbgenerated("(now())")) @db.Timestamp(0)
-  updated_at     DateTime        @default(dbgenerated("(now())")) @db.Timestamp(0)
-  default        Boolean         @default(true)
-  name           String          @db.Text
-  img            String?         @db.Text
-  range          range?          @relation(fields: [attack_range], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "weapon_ibfk_1")
-  damagetype     damagetype?     @relation(fields: [damage_type], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "weapon_ibfk_2")
-  weaponcategory weaponcategory? @relation(fields: [category], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "weapon_ibfk_3")
-  holdtype       holdtype?       @relation(fields: [hold_type], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "weapon_ibfk_4")
+  id             Int            @id @default(autoincrement())
+  price          Float          @db.Float
+  damage         String         @db.Text
+  critical       String         @db.Text
+  melee          Boolean
+  attack_range   Int
+  damage_type    Int
+  spaces         Float          @db.Float
+  category       Int
+  hold_type      Int
+  created_at     DateTime       @default(dbgenerated("(now())")) @db.Timestamp(0)
+  updated_at     DateTime       @default(dbgenerated("(now())")) @db.Timestamp(0)
+  default        Boolean        @default(true)
+  name           String         @db.Text
+  img            String?        @db.Text
+  range          range          @relation(fields: [attack_range], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "weapon_ibfk_1")
+  damagetype     damagetype     @relation(fields: [damage_type], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "weapon_ibfk_2")
+  weaponcategory weaponcategory @relation(fields: [category], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "weapon_ibfk_3")
+  holdtype       holdtype?      @relation(fields: [hold_type], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "weapon_ibfk_4")
 }
 
 model weaponcategory {
