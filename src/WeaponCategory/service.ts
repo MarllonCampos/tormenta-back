@@ -12,8 +12,10 @@ class WeaponCategoryService {
     const weaponcategory = await this.repository.findMany();
     return weaponcategory;
   };
-  async show() {
-    return null;
+  async show(id: number) {
+    return await this.repository.findUnique({
+      where: { id },
+    });
   }
   async create() {
     return null;

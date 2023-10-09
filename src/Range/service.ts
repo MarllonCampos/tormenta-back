@@ -12,9 +12,13 @@ class RangeService {
     const range = await this.repository.findMany();
     return range;
   };
-  async show(req: Request, res: Response) {
-    return null;
-  }
+  show = async (id: number) => {
+    return await this.repository.findUnique({
+      where: {
+        id,
+      },
+    });
+  };
   async create(req: Request, res: Response) {
     return null;
   }

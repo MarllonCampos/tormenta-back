@@ -12,9 +12,13 @@ class HoldTypeService {
     const holdtype = await this.repository.findMany();
     return holdtype;
   };
-  async show(req: Request, res: Response) {
-    return null;
-  }
+  show = async (id: number) => {
+    return this.repository.findUnique({
+      where: {
+        id,
+      },
+    });
+  };
   async create(req: Request, res: Response) {
     return null;
   }
