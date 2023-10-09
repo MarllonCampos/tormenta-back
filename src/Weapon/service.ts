@@ -32,9 +32,6 @@ class WeaponService {
       where: {
         id,
       },
-      select: {
-        ...this.defaultWeaponObject,
-      },
     });
   }
   async create() {
