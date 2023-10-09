@@ -10,16 +10,16 @@ class {{pascalCase name}}Controller {
     const {{camelCase name}} = await this.service.index();
     return res.json({{camelCase name}});
   };
-  async show(req: Request, res: Response) {
+  show = async (req: Request, res: Response) => {
     res.send(null);
   }
-  async store(req: Request, res: Response) {
+  store = async (req: Request, res: Response) => {
     res.send(null);
   }
-  async update(req: Request, res: Response) {
+  update = async (req: Request, res: Response) => {
     res.send(null);
   }
-  async delete(req: Request, res: Response) {
+  delete = async (req: Request, res: Response) => {
     res.send(null);
   }
 }
