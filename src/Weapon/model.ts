@@ -15,21 +15,6 @@ export interface weaponInputInterface {
   img: string | null;
 }
 
-export interface weaponOutputInterface {
-  name: string;
-  price: number;
-  damage: string;
-  critical: string;
-  melee: boolean;
-  attackRange: number;
-  damageType: number;
-  spaces: number;
-  category: number;
-  holdType: number;
-  default: boolean;
-  img: string | null;
-}
-
 export default class WeaponDTO {
   private _weapon: any;
   private weaponSchema = yup.object().shape({
