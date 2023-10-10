@@ -107,6 +107,7 @@ class WeaponController {
       }
     }
   };
+
   update = async (req: Request, res: Response) => {
     const errors: string[] = [];
     try {
@@ -167,11 +168,13 @@ class WeaponController {
     const promiseInfoArray = this.generatePromiseInfoArray(normalizedWeapon);
     const promiseArray = promiseInfoArray.map(({ service }) => service);
     const results = await Promise.all(promiseArray);
+
     promiseInfoArray.forEach(({ key }, index) => {
       const result = results[index];
       if (result == null)
         arrayOfNotFound.push(`Não encontramos este tipo de ${Object(this.translateForeignKeys)[key]} cadastrado`);
     });
+
     return arrayOfNotFound;
   }
 
