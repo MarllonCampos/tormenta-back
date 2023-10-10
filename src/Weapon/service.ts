@@ -47,12 +47,18 @@ class WeaponService {
   };
 
   update = async ({ id, updateWeapon }: Update) => {
+    const serverOffsetMinutes = Number(process.env.SERVER_OFFSET_MINUTES) || 0;
+    const THREE_HOURS = serverOffsetMinutes * 60 * 1000;
+    const currentDate = new Date();
+    const updated_at = new Date(currentDate.getTime() - THREE_HOURS);
+
     return await this.repository.update({
       where: {
         id,
       },
       data: {
         ...updateWeapon,
+        updated_at,
       },
     });
   };
