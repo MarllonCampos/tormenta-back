@@ -1,7 +1,11 @@
 import { Prisma, PrismaClient, weapon as prismaWeaponInterface } from '@prisma/client';
 import { DefaultArgs } from '@prisma/client/runtime/library';
-import { weaponInterface } from './model';
+import { weaponInputInterface } from './model';
 
+interface Update {
+  id: number;
+  updateWeapon: weaponInputInterface;
+}
 class WeaponService {
   private repository: Prisma.weaponDelegate<DefaultArgs>;
   private defaultWeaponObject = {
@@ -29,29 +33,32 @@ class WeaponService {
   };
 
   show = async (id: number) => {
-    console.log('show ', id);
-
     return await this.repository.findUnique({
       where: {
         id,
       },
     });
   };
-  create = async (newWeapon: weaponInterface) => {
-    await this.repository.create({
+
+  create = async (newWeapon: weaponInputInterface) => {
+    return await this.repository.create({
       data: newWeapon,
     });
   };
-  update = async (id: number) => {
-    await this.repository.update({
+
+  update = async ({ id, updateWeapon }: Update) => {
+    return await this.repository.update({
       where: {
         id,
       },
-      data: {},
+      data: {
+        ...updateWeapon,
+      },
     });
   };
+
   delete = async (id: number) => {
-    await this.repository.delete({
+    return await this.repository.delete({
       where: {
         id,
       },
