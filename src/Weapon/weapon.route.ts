@@ -31,7 +31,7 @@ WeaponRoutes.get('/:id', controller.show);
 
 WeaponRoutes.post('/', controller.store);
 
-WeaponRoutes.patch('/', controller.update);
+WeaponRoutes.patch('/:id', controller.update);
 
 WeaponRoutes.delete('/:id', controller.delete);
 
