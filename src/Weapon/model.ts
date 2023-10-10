@@ -1,6 +1,6 @@
 import * as yup from 'yup';
 
-export interface weaponInterface {
+export interface weaponInputInterface {
   name: string;
   price: number;
   damage: string;
@@ -11,6 +11,21 @@ export interface weaponInterface {
   spaces: number;
   category: number;
   hold_type: number;
+  default: boolean;
+  img: string | null;
+}
+
+export interface weaponOutputInterface {
+  name: string;
+  price: number;
+  damage: string;
+  critical: string;
+  melee: boolean;
+  attackRange: number;
+  damageType: number;
+  spaces: number;
+  category: number;
+  holdType: number;
   default: boolean;
   img: string | null;
 }
@@ -39,51 +54,50 @@ export default class WeaponDTO {
     img: yup.string().nullable(),
   });
 
+  private updateWeaponSchema = yup.object().shape({
+    name: yup.string().min(3, 'O campo de nome [name] deve ter no mínimo 3 caracteres'),
+    price: yup.number().min(0).integer('O campo de preço [price] deve ser um inteiro'),
+    damage: yup.string(),
+    critical: yup.string(),
+    melee: yup.boolean(),
+    attackRange: yup.number().positive(),
+    damageType: yup.number().positive(),
+    spaces: yup.number().positive(),
+    category: yup.number().positive(),
+    holdType: yup.number().positive(),
+    default: yup.boolean(),
+    img: yup.string().nullable(),
+  });
+
   constructor(weapon: any) {
-    this._weapon = yup.object().camelCase().cast(weapon);
+    this._weapon = this.updateWeaponSchema.camelCase().cast(weapon);
   }
 
-  public get weapon(): weaponInterface {
-    return this._weapon;
-  }
-
-  create = () => {
-    const validatedNewWeapon = this.weaponSchema.snakeCase().validateSync(this._weapon, {
-      abortEarly: false,
-      strict: true,
-      stripUnknown: true,
-    });
-
-    this._weapon = yup.object().snakeCase().cast(validatedNewWeapon);
-  };
-
-  update = () => {
-    const updateSchema = yup.object().shape({
-      name: yup.string().min(3, 'O campo de nome [name] deve ter no mínimo 3 caracteres'),
-      price: yup.number().min(0).integer('O campo de preço [price] deve ser um inteiro'),
-      damage: yup.string(),
-      critical: yup.string(),
-      melee: yup.boolean(),
-      attackRange: yup.number().positive(),
-      damageType: yup.number().positive(),
-      spaces: yup.number().positive(),
-      category: yup.number().positive(),
-      holdType: yup.number().positive(),
-      default: yup.boolean(),
-      img: yup.string().nullable(),
-    });
-    const validatedUpdateWeapon = updateSchema.validateSync(this._weapon, {
+  create = (): weaponInputInterface => {
+    const validatedNewWeapon = this.weaponSchema.validateSync(this._weapon, {
       abortEarly: false,
       stripUnknown: true,
-      strict: true,
     });
-    this._weapon = yup.object().snakeCase().cast(validatedUpdateWeapon);
+
+    const castedValidatedNewWeapon = yup.object().snakeCase().cast(validatedNewWeapon) as weaponInputInterface;
+    return castedValidatedNewWeapon;
   };
 
-  view = () => {
-    const castedWeapon = this.weaponSchema.cast(this._weapon, {
+  update = (): weaponInputInterface => {
+    const validatedUpdateWeapon = this.updateWeaponSchema.validateSync(this._weapon, {
+      abortEarly: false,
       stripUnknown: true,
     });
-    this._weapon = castedWeapon;
+    const normalizedWeapon = yup.object().snakeCase().cast(validatedUpdateWeapon) as weaponInputInterface;
+
+    return normalizedWeapon;
+  };
+
+  view = (): yup.InferType<typeof this.updateWeaponSchema> => {
+    const castedWeapon = this.updateWeaponSchema.cast(this._weapon, {
+      stripUnknown: true,
+    });
+
+    return castedWeapon;
   };
 }
