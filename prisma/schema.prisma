@@ -66,29 +66,11 @@ model creaturetype {
   threat     threat[]
 }
 
-model damagetype {
-  id     Int      @id @default(autoincrement())
-  type   String?  @db.Text
-  weapon weapon[]
-}
-
-model holdtype {
-  id     Int      @id @default(autoincrement())
-  type   String?  @db.Text
-  weapon weapon[]
-}
-
 model mastery {
   id            Int      @id @default(autoincrement())
   type          String?  @db.Text
   trained       Boolean? @default(false)
   armor_penalty Boolean? @default(false)
-}
-
-model range {
-  id     Int      @id @default(autoincrement())
-  type   String?  @db.Text
-  weapon weapon[]
 }
 
 model threat {
@@ -136,7 +118,7 @@ model weapon {
   category       Int
   hold_type      Int
   created_at     DateTime       @default(dbgenerated("(now())")) @db.Timestamp(0)
-  updated_at     DateTime       @default(dbgenerated("(now())")) @db.Timestamp(0)
+  updated_at     DateTime       @updatedAt
   default        Boolean        @default(true)
   name           String         @db.Text
   img            String?        @db.Text
@@ -146,8 +128,26 @@ model weapon {
   holdtype       holdtype?      @relation(fields: [hold_type], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "weapon_ibfk_4")
 }
 
+model damagetype {
+  id     Int      @id @default(autoincrement())
+  type   String   @db.Text
+  weapon weapon[]
+}
+
+model holdtype {
+  id     Int      @id @default(autoincrement())
+  type   String   @db.Text
+  weapon weapon[]
+}
+
+model range {
+  id     Int      @id @default(autoincrement())
+  type   String   @db.Text
+  weapon weapon[]
+}
+
 model weaponcategory {
   id     Int      @id @default(autoincrement())
-  type   String?  @db.Text
+  type   String   @db.Text
   weapon weapon[]
 }
