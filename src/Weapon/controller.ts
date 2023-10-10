@@ -7,12 +7,48 @@ import DamageTypeService from '../DamageType/service';
 import HoldTypeService from '../HoldType/service';
 import WeaponCategoryService from '../WeaponCategory/service';
 
+interface NormalizedWeapon {
+  name: string;
+  price: number;
+  damage: string;
+  critical: string;
+  melee: boolean;
+  attack_range?: number;
+  damage_type?: number;
+  spaces: number;
+  category?: number;
+  hold_type?: number;
+  default: boolean;
+  img?: string | null;
+}
+
+interface ForeignKeysServiceReturnType {
+  id: number;
+  type: string;
+}
+
+interface ForeignKeys extends Pick<NormalizedWeapon, 'attack_range' | 'damage_type' | 'category' | 'hold_type'> {}
+
 class WeaponController {
   private service: WeaponService;
   private rangeService: RangeService;
   private damageTypeService: DamageTypeService;
   private holdTypeService: HoldTypeService;
   private weaponCategoryService: WeaponCategoryService;
+
+  private foreignKeys: Record<keyof ForeignKeys, (value: number) => Promise<ForeignKeysServiceReturnType | any>> = {
+    attack_range: (value) => this.rangeService.show(value),
+    category: (value) => this.weaponCategoryService.show(value),
+    hold_type: (value) => this.holdTypeService.show(value),
+    damage_type: (value) => this.damageTypeService.show(value),
+  };
+
+  private translateForeignKeys: Record<keyof ForeignKeys, string> = {
+    attack_range: 'alcance',
+    category: 'categoria',
+    hold_type: 'empunhadura',
+    damage_type: 'dano',
+  };
 
   constructor() {
     this.service = new WeaponService();
@@ -53,23 +89,11 @@ class WeaponController {
       const weaponDTO = new WeaponDTO(newWeapon);
 
       const normalizedNewWeapon = weaponDTO.create();
-      const { attack_range, category, hold_type, damage_type } = normalizedNewWeapon;
-      const arrayOfPromises = [
-        this.rangeService.show(attack_range),
-        this.weaponCategoryService.show(category),
-        this.holdTypeService.show(hold_type),
-        this.damageTypeService.show(damage_type),
-      ];
+      const notFoundForeignKeys: Array<string> = await this.generateNotFoundForeignKeys(normalizedNewWeapon);
 
-      const [rangeExists, categoryExists, holdTypeExists, damageTypeExists] = await Promise.all(arrayOfPromises);
-
-      const notFoundEntries = [];
-      if (rangeExists == null) notFoundEntries.push('Não encontramos este tipo de alcance cadastrado');
-      if (categoryExists == null) notFoundEntries.push('Não encontramos este tipo de categoria cadastrado');
-      if (holdTypeExists == null) notFoundEntries.push('Não encontramos este tipo de empunhadura cadastrado');
-      if (damageTypeExists == null) notFoundEntries.push('Não encontramos este tipo de dano cadastrado');
-      if (notFoundEntries.length > 0) errors.push(...notFoundEntries);
-      if (errors.length > 0) res.status(400).send({ message: 'Um erro ocorreu, veja para mais detalhes', errors });
+      if (notFoundForeignKeys.length > 0) errors.push(...notFoundForeignKeys);
+      if (errors.length > 0)
+        return res.status(400).send({ message: 'Um erro ocorreu, veja para mais detalhes', errors });
 
       await this.service.create(normalizedNewWeapon);
 
@@ -84,6 +108,7 @@ class WeaponController {
     }
   };
   update = async (req: Request, res: Response) => {
+    const errors: string[] = [];
     try {
       const { id } = req.params;
 
@@ -92,10 +117,16 @@ class WeaponController {
       const weaponExists = await this.service.show(formattedId);
       if (!weaponExists) return res.status(400).send({ message: 'A arma informada não foi encontrada' });
       const weapon = req.body;
+      if (Object.keys(weapon).length == 0) return res.status(400).send({ message: 'Não há campos a serem alterados' });
 
       const weaponDTO = new WeaponDTO(weapon);
 
       const normalizedWeapon = weaponDTO.update();
+      const notFoundForeignKeys: Array<string> = await this.generateNotFoundForeignKeys(normalizedWeapon);
+
+      if (notFoundForeignKeys.length > 0) errors.push(...notFoundForeignKeys);
+      if (errors.length > 0)
+        return res.status(400).send({ message: 'Um erro ocorreu, veja para mais detalhes', errors });
 
       const updatedWeapon = await this.service.update({ id: formattedId, updateWeapon: normalizedWeapon });
 
@@ -107,7 +138,7 @@ class WeaponController {
       if (error instanceof yup.ValidationError) {
         return res.status(400).send({
           message: 'Houve um erro com a validação dos dados',
-          errors: error.errors,
+          error: error.errors,
         });
       }
       console.log(error);
@@ -115,6 +146,7 @@ class WeaponController {
       return res.status(500).send({ message: 'Erro no backend', x: error }); // TODO --> Criar um erro padrão de backend
     }
   };
+
   delete = async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
@@ -129,6 +161,31 @@ class WeaponController {
       return res.status(500).send('Erro no backend'); // TODO --> Criar um erro padrão de backend
     }
   };
+
+  private async generateNotFoundForeignKeys(normalizedWeapon: NormalizedWeapon): Promise<Array<string>> {
+    const arrayOfNotFound: Array<string> = [];
+    const promiseInfoArray = this.generatePromiseInfoArray(normalizedWeapon);
+    const promiseArray = promiseInfoArray.map(({ service }) => service);
+    const results = await Promise.all(promiseArray);
+    promiseInfoArray.forEach(({ key }, index) => {
+      const result = results[index];
+      if (result == null)
+        arrayOfNotFound.push(`Não encontramos este tipo de ${Object(this.translateForeignKeys)[key]} cadastrado`);
+    });
+    return arrayOfNotFound;
+  }
+
+  private generatePromiseInfoArray(normalizedWeapon: NormalizedWeapon): Array<{ key: string; service: Promise<any> }> {
+    const array: Array<{ key: string; service: Promise<any> }> = [];
+    for (const key in this.foreignKeys) {
+      if (key in normalizedWeapon) {
+        const foreignKeyServiceMethod = Object(this.foreignKeys)[key];
+        const service = foreignKeyServiceMethod(Object(normalizedWeapon)[key]);
+        array.push({ key, service });
+      }
+    }
+    return array;
+  }
 }
 
 export default WeaponController;
