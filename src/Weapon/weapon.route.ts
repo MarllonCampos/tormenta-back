@@ -1,4 +1,4 @@
-import { Request, Response, Router } from 'express';
+import { Router } from 'express';
 import WeaponController from './controller';
 
 const WeaponRoutes = Router();
