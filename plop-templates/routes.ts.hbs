@@ -11,8 +11,8 @@ const controller = new {{pascalCase name}}Controller();
 
 {{pascalCase name}}Routes.post('/',controller.store);
 
-{{pascalCase name}}Routes.patch('/', controller.update);
+{{pascalCase name}}Routes.patch('/:id', controller.update);
 
-{{pascalCase name}}Routes.delete('/', controller.delete);
+{{pascalCase name}}Routes.delete('/:id', controller.delete);
 
 export { {{pascalCase name}}Routes };
