@@ -1,6 +1,11 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 import { DefaultArgs } from '@prisma/client/runtime/library';
+import { rangeInputInterface } from './model';
 
+interface Update {
+  id: number;
+  updateRange: rangeInputInterface;
+}
 class RangeService {
   private repository: Prisma.rangeDelegate<DefaultArgs>;
   constructor() {
@@ -9,9 +14,14 @@ class RangeService {
   }
 
   index = async () => {
-    const range = await this.repository.findMany();
+    const range = await this.repository.findMany({
+      select: {
+        type: true,
+      },
+    });
     return range;
   };
+
   show = async (id: number) => {
     return await this.repository.findUnique({
       where: {
@@ -19,14 +29,29 @@ class RangeService {
       },
     });
   };
-  async create(req: Request, res: Response) {
-    return null;
+
+  async create(newRange: rangeInputInterface) {
+    return await this.repository.create({
+      data: newRange,
+    });
   }
-  async update(req: Request, res: Response) {
-    return null;
+
+  async update({ id, updateRange }: Update) {
+    return await this.repository.update({
+      where: {
+        id,
+      },
+      data: {
+        ...updateRange,
+      },
+    });
   }
-  async delete(req: Request, res: Response) {
-    return null;
+  async delete(id: number) {
+    return await this.repository.delete({
+      where: {
+        id,
+      },
+    });
   }
 }
 
