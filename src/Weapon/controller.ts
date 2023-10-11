@@ -62,9 +62,10 @@ class WeaponController {
   index = async (_req: Request, res: Response, next: NextFunction) => {
     try {
       const weapons = await this.service.index();
-      return res.json(weapons);
+      if (weapons.length == 0) return res.json({ message: 'Não há armas cadastradas' });
+      return res.json({ message: 'Armas encontradas com sucesso', data: weapons });
     } catch (error) {
-      return next(error);
+      next(error);
     }
   };
 
@@ -78,7 +79,7 @@ class WeaponController {
       const weaponDTO = new WeaponDTO(specificWeapon);
       const normalizedWeapon = weaponDTO.view();
 
-      return res.status(200).send(normalizedWeapon);
+      return res.status(200).send({ message: 'Arma encontrada com sucesso', data: normalizedWeapon });
     } catch (error) {
       return next(error);
     }
@@ -95,9 +96,12 @@ class WeaponController {
       if (notFoundForeignKeys.length > 0) errors.push(...notFoundForeignKeys);
       if (errors.length > 0) throw WeaponErrors.DefaultErrorMessage(errors);
 
-      await this.service.create(normalizedNewWeapon);
+      const createdWeapon = await this.service.create(normalizedNewWeapon);
 
-      return res.status(201).send({ message: 'Arma criada com sucesso' });
+      const outputWeaponDTO = new WeaponDTO(createdWeapon);
+      const outputWeapon = outputWeaponDTO.view();
+
+      return res.status(201).send({ message: 'Arma criada com sucesso', data: outputWeapon });
     } catch (error) {
       if (error instanceof yup.ValidationError) {
         const yupErrors = error.errors;
@@ -121,9 +125,9 @@ class WeaponController {
       if (Object.keys(weapon).length == 0) throw WeaponErrors.NoFieldsToUpdate();
 
       const weaponDTO = new WeaponDTO(weapon);
-
       const normalizedWeapon = weaponDTO.update();
-      const notFoundForeignKeys: Array<string> = await this.generateNotFoundForeignKeys(normalizedWeapon);
+
+      const notFoundForeignKeys = await this.generateNotFoundForeignKeys(normalizedWeapon);
 
       if (notFoundForeignKeys.length > 0) errors.push(...notFoundForeignKeys);
       if (errors.length > 0) throw WeaponErrors.DefaultErrorMessage(errors);
@@ -131,8 +135,8 @@ class WeaponController {
       const updatedWeapon = await this.service.update({ id: formattedId, updateWeapon: normalizedWeapon });
 
       const outputWeaponDTO = new WeaponDTO(updatedWeapon);
-
       const outputWeapon = outputWeaponDTO.view();
+
       return res.status(200).send({ message: 'A arma foi atualizada', details: outputWeapon });
     } catch (error) {
       if (error instanceof yup.ValidationError) {
@@ -157,7 +161,7 @@ class WeaponController {
 
       await this.service.delete(formattedId);
 
-      return res.status(204).send();
+      return res.status(204).send({ message: 'Arma exluída com sucesso' });
     } catch (error) {
       next(error);
     }
