@@ -1,11 +1,12 @@
 import * as yup from 'yup';
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import WeaponService from './service';
 import WeaponDTO from './model';
 import RangeService from '../Range/service';
 import DamageTypeService from '../DamageType/service';
 import HoldTypeService from '../HoldType/service';
 import WeaponCategoryService from '../WeaponCategory/service';
+import WeaponErrors from './errors';
 
 interface NormalizedWeapon {
   name: string;
@@ -58,57 +59,55 @@ class WeaponController {
     this.weaponCategoryService = new WeaponCategoryService();
   }
 
-  index = async (_: Request, res: Response) => {
+  index = async (_req: Request, res: Response, next: NextFunction) => {
     try {
       const weapons = await this.service.index();
       return res.json(weapons);
     } catch (error) {
-      return res.status(500).send({ error: true });
+      return next(error);
     }
   };
 
-  show = async (req: Request, res: Response) => {
+  show = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
       const formattedId = Number(id);
       const specificWeapon = await this.service.show(formattedId);
-      if (!specificWeapon) return res.status(400).send({ message: 'A arma informada não foi encontrada' });
+
+      if (!specificWeapon) throw WeaponErrors.WeaponNotFound();
       const weaponDTO = new WeaponDTO(specificWeapon);
       const normalizedWeapon = weaponDTO.view();
 
       return res.status(200).send(normalizedWeapon);
     } catch (error) {
-      return res.status(500).send('Erro no backend'); // TODO --> Criar um erro padrão de backend
+      return next(error);
     }
   };
 
-  store = async (req: Request, res: Response) => {
+  store = async (req: Request, res: Response, next: NextFunction) => {
     const errors = [];
     try {
       const newWeapon = req.body;
       const weaponDTO = new WeaponDTO(newWeapon);
-
       const normalizedNewWeapon = weaponDTO.create();
       const notFoundForeignKeys: Array<string> = await this.generateNotFoundForeignKeys(normalizedNewWeapon);
 
       if (notFoundForeignKeys.length > 0) errors.push(...notFoundForeignKeys);
-      if (errors.length > 0)
-        return res.status(400).send({ message: 'Um erro ocorreu, veja para mais detalhes', errors });
+      if (errors.length > 0) throw WeaponErrors.DefaultErrorMessage(errors);
 
       await this.service.create(normalizedNewWeapon);
 
       return res.status(201).send({ message: 'Arma criada com sucesso' });
     } catch (error) {
       if (error instanceof yup.ValidationError) {
-        return res.status(400).send({
-          message: 'Houve um erro com a validação dos dados',
-          errors: [...error.errors, ...errors],
-        });
+        const yupErrors = error.errors;
+        return next(WeaponErrors.ValidationErrors([...yupErrors, ...errors]));
       }
+      next(error);
     }
   };
 
-  update = async (req: Request, res: Response) => {
+  update = async (req: Request, res: Response, next: NextFunction) => {
     const errors: string[] = [];
     try {
       const { id } = req.params;
@@ -116,9 +115,10 @@ class WeaponController {
       if (!id) return res.status(400).send('You burro men?!');
       const formattedId = Number(id);
       const weaponExists = await this.service.show(formattedId);
-      if (!weaponExists) return res.status(400).send({ message: 'A arma informada não foi encontrada' });
+      if (!weaponExists) throw WeaponErrors.WeaponNotFound();
       const weapon = req.body;
-      if (Object.keys(weapon).length == 0) return res.status(400).send({ message: 'Não há campos a serem alterados' });
+
+      if (Object.keys(weapon).length == 0) throw WeaponErrors.NoFieldsToUpdate();
 
       const weaponDTO = new WeaponDTO(weapon);
 
@@ -126,8 +126,7 @@ class WeaponController {
       const notFoundForeignKeys: Array<string> = await this.generateNotFoundForeignKeys(normalizedWeapon);
 
       if (notFoundForeignKeys.length > 0) errors.push(...notFoundForeignKeys);
-      if (errors.length > 0)
-        return res.status(400).send({ message: 'Um erro ocorreu, veja para mais detalhes', errors });
+      if (errors.length > 0) throw WeaponErrors.DefaultErrorMessage(errors);
 
       const updatedWeapon = await this.service.update({ id: formattedId, updateWeapon: normalizedWeapon });
 
@@ -137,29 +136,30 @@ class WeaponController {
       return res.status(200).send({ message: 'A arma foi atualizada', details: outputWeapon });
     } catch (error) {
       if (error instanceof yup.ValidationError) {
-        return res.status(400).send({
-          message: 'Houve um erro com a validação dos dados',
-          error: error.errors,
-        });
+        const yupErrors = error.errors;
+        return next(WeaponErrors.ValidationErrors([...yupErrors, ...errors]));
       }
-      console.log(error);
 
-      return res.status(500).send({ message: 'Erro no backend', x: error }); // TODO --> Criar um erro padrão de backend
+      next(error);
     }
   };
 
-  delete = async (req: Request, res: Response) => {
+  delete = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
 
-      if (!id) return res.status(400).send('You burro men?!');
+      if (!id) throw WeaponErrors.WeaponNotFound();
+
       const formattedId = Number(id);
+
       const weaponExists = await this.service.show(formattedId);
-      if (!weaponExists) return res.status(400).send({ message: 'A arma informada não foi encontrada' });
+      if (!weaponExists) throw WeaponErrors.WeaponNotFound();
+
       await this.service.delete(formattedId);
+
       return res.status(204).send();
     } catch (error) {
-      return res.status(500).send('Erro no backend'); // TODO --> Criar um erro padrão de backend
+      next(error);
     }
   };
 
