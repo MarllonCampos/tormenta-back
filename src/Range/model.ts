@@ -12,19 +12,23 @@ export default class RangeDTO {
       .required('O campo de nome [type] não deve estar vazio'),
   });
 
+  private updateRangeSchema = yup.object().shape({
+    type: yup.string().min(3, 'O campo de nome [type]  deve ter no mínimo 3 caracteres'),
+  });
+
   private _defaultYupOptions = {
     abortEarly: false,
     stripUnknown: true,
   };
 
   constructor(range: any) {
-    this._range = this.rangeSchema.cast(range);
+    this._range = this.updateRangeSchema.camelCase().cast(range);
   }
 
   create = (): rangeInputInterface => {
     const validateNewRange = this.rangeSchema.validateSync(this._range, this._defaultYupOptions);
 
-    return validateNewRange;
+    return validateNewRange as rangeInputInterface;
   };
 
   update = (): rangeInputInterface => {
