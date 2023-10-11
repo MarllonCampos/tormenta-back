@@ -1,1 +1,8 @@
-export default class {{pascalCase name}}DTO {}
+export default class {{pascalCase name}}DTO {
+  private _item: any;
+
+  constructor(item) {
+    this._item = item
+  }
+
+}
