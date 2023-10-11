@@ -115,8 +115,6 @@ class WeaponController {
     const errors: string[] = [];
     try {
       const { id } = req.params;
-
-      if (!id) return res.status(400).send('You burro men?!');
       const formattedId = Number(id);
       const weaponExists = await this.service.show(formattedId);
       if (!weaponExists) throw WeaponErrors.WeaponNotFound();
@@ -137,7 +135,7 @@ class WeaponController {
       const outputWeaponDTO = new WeaponDTO(updatedWeapon);
       const outputWeapon = outputWeaponDTO.view();
 
-      return res.status(200).send({ message: 'A arma foi atualizada', details: outputWeapon });
+      return res.status(200).send({ message: 'A arma foi atualizada', data: outputWeapon });
     } catch (error) {
       if (error instanceof yup.ValidationError) {
         const yupErrors = error.errors;
