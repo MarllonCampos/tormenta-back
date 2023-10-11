@@ -12,7 +12,7 @@ RangeRoutes.get('/:id', controller.show);
 
 RangeRoutes.post('/', controller.store);
 
-RangeRoutes.patch('/', controller.update);
+RangeRoutes.patch('/:id', controller.update);
 
 RangeRoutes.delete('/:id', controller.delete);
 
@@ -20,11 +20,11 @@ RangeRoutes.use((err: any, _req: Request, res: Response, _next: NextFunction) =>
   if (err instanceof RangeErrors) {
     const sendObject: {
       message: string;
-      details?: string[];
+      data?: string[];
     } = {
       message: err.message,
     };
-    if (err.errors.length > 0) sendObject.details = err.errors;
+    if (err.errors.length > 0) sendObject.data = err.errors;
     return res.status(400).send(sendObject);
   }
 
