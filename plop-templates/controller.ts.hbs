@@ -11,16 +11,42 @@ class {{pascalCase name}}Controller {
     return res.json({{camelCase name}});
   };
   show = async (req: Request, res: Response) => {
-    res.send(null);
+    try {
+      const {id} = req.params
+      const formattedId = Number(id)
+      const specificItem = await this.service.show(formattedId)
+
+      if(!specificItem) throw Error.SpecificNotFound()
+      const {{pascalCase name}}DTO = {{pascalCase name}}DTO(specificItem)
+      const normalizedSpecific = {{pascalCase name}}DTO.view()
+      return res.status(200).send({
+        message: 'Specific encontradx com sucessx',
+        data: normalizedSpecific 
+      })
+    } catch(error){
+      next(error)
+    }
   }
   store = async (req: Request, res: Response) => {
-    res.send(null);
+    try {
+
+    } catch(error){
+      next(error)
+    }
   }
   update = async (req: Request, res: Response) => {
-    res.send(null);
+    try {
+
+    } catch(error){
+      next(error)
+    }
   }
   delete = async (req: Request, res: Response) => {
-    res.send(null);
+    try {
+
+    } catch(error){
+      next(error)
+    }
   }
 }
 
