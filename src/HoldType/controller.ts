@@ -13,7 +13,7 @@ class HoldTypeController {
   index = async (_: Request, res: Response, next: NextFunction) => {
     try {
       const holdTypes = await this.service.index();
-      if (holdTypes.length == 0) return res.json({ message: 'Não há empunhadura de armas cadastradoa' });
+      if (holdTypes.length == 0) return res.json({ message: 'Não há empunhadura de armas cadastrados' });
 
       return res.json({ message: 'Empunhaduras encontradas com sucesso', data: holdTypes });
     } catch (error) {
