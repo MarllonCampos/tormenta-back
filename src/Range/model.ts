@@ -37,10 +37,10 @@ export default class RangeDTO {
   };
 
   view = (): yup.InferType<typeof this.rangeSchema> => {
-    const castedWeapon = this.rangeSchema.cast(this._range, {
+    const castedRange = this.rangeSchema.cast(this._range, {
       stripUnknown: true,
     });
 
-    return castedWeapon;
+    return castedRange;
   };
 }

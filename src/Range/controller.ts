@@ -102,7 +102,7 @@ class RangeController {
 
       await this.service.delete(formattedId);
 
-      return res.status(204).send({ message: 'Arma exluída com sucesso' });
+      return res.status(204).send({ message: 'Alcance exluído com sucesso' });
     } catch (error) {
       next(error);
     }
