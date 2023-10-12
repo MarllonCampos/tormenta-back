@@ -1,6 +1,11 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 import { DefaultArgs } from '@prisma/client/runtime/library';
+import { holdTypeInputInterface } from './model';
 
+interface Update {
+  id: number;
+  updateHoldType: holdTypeInputInterface;
+}
 class HoldTypeService {
   private repository: Prisma.holdtypeDelegate<DefaultArgs>;
   constructor() {
@@ -9,24 +14,45 @@ class HoldTypeService {
   }
 
   index = async () => {
-    const holdtype = await this.repository.findMany();
-    return holdtype;
+    const holdType = await this.repository.findMany({
+      select: {
+        type: true,
+      },
+    });
+    return holdType;
   };
+
   show = async (id: number) => {
-    return this.repository.findUnique({
+    return await this.repository.findUnique({
       where: {
         id,
       },
     });
   };
-  async create(req: Request, res: Response) {
-    return null;
+
+  async create(newHoldType: holdTypeInputInterface) {
+    return await this.repository.create({
+      data: newHoldType,
+    });
   }
-  async update(req: Request, res: Response) {
-    return null;
+
+  async update({ id, updateHoldType }: Update) {
+    return await this.repository.update({
+      where: {
+        id,
+      },
+      data: {
+        ...updateHoldType,
+      },
+    });
   }
-  async delete(req: Request, res: Response) {
-    return null;
+
+  async delete(id: number) {
+    return await this.repository.delete({
+      where: {
+        id,
+      },
+    });
   }
 }
 
