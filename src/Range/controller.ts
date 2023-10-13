@@ -25,8 +25,9 @@ class RangeController {
     try {
       const { id } = req.params;
       const formattedId = Number(id);
-      const specificRange = await this.service.show(formattedId);
+      if (isNaN(formattedId)) throw RangeErrors.IdMustBeAnumber();
 
+      const specificRange = await this.service.show(formattedId);
       if (!specificRange) throw RangeErrors.RangeNotFound();
       const rangeDTO = new RangeDTO(specificRange);
       const normalizedRange = rangeDTO.view();
@@ -66,6 +67,8 @@ class RangeController {
     try {
       const { id } = req.params;
       const formattedId = Number(id);
+      if (isNaN(formattedId)) throw RangeErrors.IdMustBeAnumber();
+
       const rangeExists = await this.service.show(formattedId);
       if (!rangeExists) throw RangeErrors.RangeNotFound();
       const range = req.body;
@@ -92,10 +95,8 @@ class RangeController {
   delete = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
-
-      if (!id) throw RangeErrors.RangeNotFound();
-
       const formattedId = Number(id);
+      if (isNaN(formattedId)) throw RangeErrors.IdMustBeAnumber();
 
       const rangeExists = await this.service.show(formattedId);
       if (!rangeExists) throw RangeErrors.RangeNotFound();

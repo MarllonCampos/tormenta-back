@@ -73,8 +73,10 @@ class WeaponController {
     try {
       const { id } = req.params;
       const formattedId = Number(id);
-      const specificWeapon = await this.service.show(formattedId);
 
+      if (isNaN(formattedId)) throw WeaponErrors.IdMustBeAnumber();
+
+      const specificWeapon = await this.service.show(formattedId);
       if (!specificWeapon) throw WeaponErrors.WeaponNotFound();
       const weaponDTO = new WeaponDTO(specificWeapon);
       const normalizedWeapon = weaponDTO.view();
@@ -116,8 +118,11 @@ class WeaponController {
     try {
       const { id } = req.params;
       const formattedId = Number(id);
+      if (isNaN(formattedId)) throw WeaponErrors.IdMustBeAnumber();
+
       const weaponExists = await this.service.show(formattedId);
       if (!weaponExists) throw WeaponErrors.WeaponNotFound();
+
       const weapon = req.body;
 
       if (Object.keys(weapon).length == 0) throw WeaponErrors.NoFieldsToUpdate();
@@ -150,9 +155,8 @@ class WeaponController {
     try {
       const { id } = req.params;
 
-      if (!id) throw WeaponErrors.WeaponNotFound();
-
       const formattedId = Number(id);
+      if (isNaN(formattedId)) throw WeaponErrors.IdMustBeAnumber();
 
       const weaponExists = await this.service.show(formattedId);
       if (!weaponExists) throw WeaponErrors.WeaponNotFound();

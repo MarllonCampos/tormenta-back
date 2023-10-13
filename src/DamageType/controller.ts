@@ -25,9 +25,11 @@ class DamageTypeController {
     try {
       const { id } = req.params;
       const formattedId = Number(id);
-      const specificDamageType = await this.service.show(formattedId);
+      if (isNaN(formattedId)) throw DamageTypeErrors.IdMustBeAnumber();
 
+      const specificDamageType = await this.service.show(formattedId);
       if (!specificDamageType) throw DamageTypeErrors.DamageTypeNotFound();
+
       const damageTypeDTO = new DamageTypeDTO(specificDamageType);
       const normalizedDamageType = damageTypeDTO.view();
 
@@ -66,6 +68,8 @@ class DamageTypeController {
     try {
       const { id } = req.params;
       const formattedId = Number(id);
+      if (isNaN(formattedId)) throw DamageTypeErrors.IdMustBeAnumber();
+
       const damageTypeExists = await this.service.show(formattedId);
       if (!damageTypeExists) throw DamageTypeErrors.DamageTypeNotFound();
       const damageType = req.body;
@@ -92,10 +96,8 @@ class DamageTypeController {
   delete = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
-
-      if (!id) throw DamageTypeErrors.DamageTypeNotFound();
-
       const formattedId = Number(id);
+      if (isNaN(formattedId)) throw DamageTypeErrors.IdMustBeAnumber();
 
       const damageTypeExists = await this.service.show(formattedId);
       if (!damageTypeExists) throw DamageTypeErrors.DamageTypeNotFound();

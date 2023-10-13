@@ -25,9 +25,11 @@ class HoldTypeController {
     try {
       const { id } = req.params;
       const formattedId = Number(id);
-      const specificHoldType = await this.service.show(formattedId);
+      if (isNaN(formattedId)) throw HoldTypeErrors.IdMustBeAnumber();
 
+      const specificHoldType = await this.service.show(formattedId);
       if (!specificHoldType) throw HoldTypeErrors.HoldTypeNotFound();
+
       const holdTypeDTO = new HoldTypeDTO(specificHoldType);
       const normalizedHoldType = holdTypeDTO.view();
 
@@ -66,9 +68,13 @@ class HoldTypeController {
     try {
       const { id } = req.params;
       const formattedId = Number(id);
+      if (isNaN(formattedId)) throw HoldTypeErrors.IdMustBeAnumber();
+
       const holdTypeExists = await this.service.show(formattedId);
       if (!holdTypeExists) throw HoldTypeErrors.HoldTypeNotFound();
+
       const holdType = req.body;
+
       if (Object.keys(holdType).length == 0) throw HoldTypeErrors.NoFieldsToUpdate();
 
       const holdTypeDTO = new HoldTypeDTO(holdType);
@@ -92,10 +98,8 @@ class HoldTypeController {
   delete = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
-
-      if (!id) throw HoldTypeErrors.HoldTypeNotFound();
-
       const formattedId = Number(id);
+      if (isNaN(formattedId)) throw HoldTypeErrors.IdMustBeAnumber();
 
       const holdTypeExists = await this.service.show(formattedId);
       if (!holdTypeExists) throw HoldTypeErrors.HoldTypeNotFound();
