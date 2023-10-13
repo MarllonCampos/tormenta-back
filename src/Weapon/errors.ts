@@ -22,4 +22,7 @@ export default class WeaponErrors extends Error {
   static NoFieldsToUpdate(): WeaponErrors {
     return new WeaponErrors('Não há campos a serem alterados');
   }
+  static IdMustBeAnumber(): WeaponErrors {
+    return new WeaponErrors('O parametro da rota deve ser um número inteiro');
+  }
 }

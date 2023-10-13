@@ -22,4 +22,8 @@ export default class HoldTypeErrors extends Error {
   static NoFieldsToUpdate(): HoldTypeErrors {
     return new HoldTypeErrors('Não há campos a serem alterados');
   }
+
+  static IdMustBeAnumber(): HoldTypeErrors {
+    return new HoldTypeErrors('O parametro da rota deve ser um número inteiro');
+  }
 }

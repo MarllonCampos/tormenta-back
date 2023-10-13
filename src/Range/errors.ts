@@ -22,4 +22,8 @@ export default class RangeErrors extends Error {
   static NoFieldsToUpdate(): RangeErrors {
     return new RangeErrors('Não há campos a serem alterados');
   }
+
+  static IdMustBeAnumber(): RangeErrors {
+    return new RangeErrors('O parametro da rota deve ser um número inteiro');
+  }
 }

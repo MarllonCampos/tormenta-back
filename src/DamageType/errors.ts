@@ -22,4 +22,8 @@ export default class DamageTypeErrors extends Error {
   static NoFieldsToUpdate(): DamageTypeErrors {
     return new DamageTypeErrors('Não há campos a serem alterados');
   }
+
+  static IdMustBeAnumber(): DamageTypeErrors {
+    return new DamageTypeErrors('O parametro da rota deve ser um número inteiro');
+  }
 }
