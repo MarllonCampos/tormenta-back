@@ -9,8 +9,8 @@ const routes = Router();
 
 routes.use('/weapon', WeaponRoutes);
 routes.use('/range', RangeRoutes);
-routes.use('/holdtype', HoldTypeRoutes);
-routes.use('/damagetype', DamageTypeRoutes);
-routes.use('/weaponcategory', WeaponCategoryRoutes);
+routes.use('/hold-type', HoldTypeRoutes);
+routes.use('/damage-type', DamageTypeRoutes);
+routes.use('/weapon-category', WeaponCategoryRoutes);
 
 export { routes };

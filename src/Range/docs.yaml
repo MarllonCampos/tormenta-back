@@ -1,0 +1,162 @@
+openapi: 3.1.0
+tags:
+  - name: Alcance
+    description: Operações relacionadas ao recurso de Alcance
+
+paths:
+  /range:
+    get:
+      summary: Obter Lista de Alcances
+      tags:
+        - Alcance
+      responses:
+        '200':
+          description: Alcances encontrados com sucesso
+          content:
+            application/json:
+              example:
+                message: Alcances encontrados com sucesso
+                data:
+                  - type: Adjacente
+                  - type: Curto
+                  - type: Médio
+                  - type: Longo
+    post:
+      summary: Criar Novo Alcance
+      tags:
+        - Alcance
+      description: Cria um novo alcance com base nos dados fornecidos.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  example: Pouco Mágico
+      responses:
+        '201':
+          description: Alcance criado com sucesso
+          content:
+            application/json:
+              example:
+                message: Alcance criado com sucesso
+                data:
+                  type: Pouco Mágico
+        '400':
+          description: Erro na validação dos dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationDataError'
+  /range/{id}:
+    get:
+      summary: Obter Detalhes do Alcance por ID
+      tags:
+        - Alcance
+      description: Retorna os detalhes de um alcance específico por ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do alcance a ser obtido
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Alcance encontrado com sucesso
+          content:
+            application/json:
+              example:
+                message: Alcance encontrado com sucesso
+                data:
+                  type: Pouco Mágico
+        '404':
+          description: Alcance não encontrado
+          content:
+            application/json:
+              example:
+                message: Alcance não encontrado
+    patch:
+      summary: Atualizar Alcance por ID
+      tags:
+        - Alcance
+      description: Atualiza um alcance existente com base nos dados fornecidos.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do alcance a ser atualizado
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  example: Pouco Curto
+      responses:
+        '200':
+          description: Alcance atualizado com sucesso
+          content:
+            application/json:
+              example:
+                message: O alcance foi atualizado
+                data:
+                  type: Pouco Curto
+        '400':
+          description: Erro na validação dos dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationDataError'
+        '404':
+          description: Alcance não encontrado
+          content:
+            application/json:
+              example:
+                message: Alcance não encontrado
+    delete:
+      summary: Excluir Alcance por ID
+      tags:
+        - Alcance
+      description: Exclui um alcance existente com base no ID fornecido.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do alcance a ser excluído
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Alcance excluído com sucessos
+        '400':
+          description: Erro na validação dos dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationDataError'
+
+components:
+  schemas:
+    ValidationDataError:
+      type: object
+      properties:
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            type: string
+            example:
+              - 'O campo de nome [type] não deve estar vazio'

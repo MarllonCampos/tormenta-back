@@ -1,0 +1,169 @@
+openapi: 3.1.0
+tags:
+  - name: WeaponCategory
+    description: Operações relacionadas ao recurso de WeaponCategory
+
+paths:
+  /weapon-category:
+    get:
+      summary: Todas as Categorias de Armas
+      tags:
+        - WeaponCategory
+      description: Retorna um array de categorias de armas cadastradas
+      responses:
+        '200':
+          description: Categorias de armas encontradas com sucesso
+          content:
+            application/json:
+              example:
+                message: Categorias de armas encontradas com sucesso
+                data:
+                  - type: Arma Simples
+                  - type: Arma Macial
+                  - type: Arma Exótica
+                  - type: Arma de Fogo
+    post:
+      summary: Criar Nova Categoria de Arma
+      tags:
+        - WeaponCategory
+      description: Cria uma nova categoria de arma com base nos dados fornecidos.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  example: Arma Customizada
+      responses:
+        '201':
+          description: Categoria de arma criada com sucesso
+          content:
+            application/json:
+              example:
+                message: Categoria de arma criada com sucesso
+                data:
+                  type: Arma Customizada
+        '400':
+          description: Erro na validação dos dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationDataError'
+  /weapon-category/{id}:
+    get:
+      summary: Obter Detalhes da Categoria de Arma por ID
+      tags:
+        - WeaponCategory
+      description: Retorna os detalhes de uma categoria de arma específica por ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID da categoria de arma a ser obtida
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Categoria de arma encontrada com sucesso
+          content:
+            application/json:
+              example:
+                message: Categoria de arma encontrada com sucesso
+                data:
+                  type: Arma de Fogo
+        '404':
+          description: Categoria de arma não encontrada
+          content:
+            application/json:
+              example:
+                message: Categoria de arma não encontrada
+    patch:
+      summary: Atualizar Categoria de Arma por ID
+      tags:
+        - WeaponCategory
+      description: Atualiza uma categoria de arma existente com base nos dados fornecidos.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID da categoria de arma a ser atualizada
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  example: Arma Exótica
+      responses:
+        '200':
+          description: Categoria de arma atualizada com sucesso
+          content:
+            application/json:
+              example:
+                message: A categoria de arma foi atualizada
+                data:
+                  type: Arma Marcial
+        '400':
+          description: Erro na validação dos dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationDataError'
+        '404':
+          description: Categoria de arma não encontrada
+          content:
+            application/json:
+              example:
+                message: Categoria de arma não encontrada
+    delete:
+      summary: Excluir Categoria de Arma por ID
+      tags:
+        - WeaponCategory
+      description: Exclui uma categoria de arma existente com base no ID fornecido.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID da categoria de arma a ser excluída
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Categoria de arma excluída com sucesso
+        '400':
+          description: Erro na validação dos dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationDataError'
+        '404':
+          description: Categoria de arma não encontrada
+          content:
+            application/json:
+              example:
+                message: Categoria de arma não encontrada
+
+components:
+  schemas:
+    ValidationDataError:
+      type: object
+      properties:
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            type: string
+            example:
+              - O campo de nome [name] não deve estar vazio

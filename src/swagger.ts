@@ -13,7 +13,7 @@ const options = {
       },
     },
   },
-  apis: [path.join(__dirname, '**', '*.route.ts')],
+  apis: [path.join(__dirname, '**', 'docs.yaml')],
 };
 
 const swaggerSpecs = swaggerJSDoc(options);
