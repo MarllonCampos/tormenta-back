@@ -1,29 +1,17 @@
-export default class DamageTypeErrors extends Error {
+import DefaultErrors, { IErrorConstructor } from '../Errors/defaultErrors';
+
+export default class DamageTypeErrors extends DefaultErrors {
   errors: string[] = [];
 
-  constructor(message: string, errors: string[] = []) {
-    super(message);
+  constructor({ message, errors = [], status = 400 }: IErrorConstructor) {
+    super({ message, errors, status });
     this.errors = errors;
+    this.status = status;
+
     Object.setPrototypeOf(this, DamageTypeErrors.prototype);
   }
 
-  static ValidationErrors(errors: string[] = []): DamageTypeErrors {
-    return new DamageTypeErrors('Houve um erro com a validação dos dados', errors);
-  }
-
-  static DefaultErrorMessage(errors: string[] = []): DamageTypeErrors {
-    return new DamageTypeErrors('Existem erros a serem corrigidos, verifique e corrija-os', errors);
-  }
-
   static DamageTypeNotFound(): DamageTypeErrors {
-    return new DamageTypeErrors('O tipo de dano informado não foi encontrado');
-  }
-
-  static NoFieldsToUpdate(): DamageTypeErrors {
-    return new DamageTypeErrors('Não há campos a serem alterados');
-  }
-
-  static IdMustBeAnumber(): DamageTypeErrors {
-    return new DamageTypeErrors('O parametro da rota deve ser um número inteiro');
+    return new DamageTypeErrors({ message: 'O tipo de dano informado não foi encontrado', status: 404 });
   }
 }
