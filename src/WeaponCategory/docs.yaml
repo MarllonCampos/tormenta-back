@@ -1,6 +1,6 @@
 openapi: 3.1.0
 tags:
-  - name: WeaponCategory
+  - name: Categoria de Arma
     description: Operações relacionadas ao recurso de WeaponCategory
 
 paths:
@@ -8,7 +8,7 @@ paths:
     get:
       summary: Todas as Categorias de Armas
       tags:
-        - WeaponCategory
+        - Categoria de Arma
       description: Retorna um array de categorias de armas cadastradas
       responses:
         '200':
@@ -25,7 +25,7 @@ paths:
     post:
       summary: Criar Nova Categoria de Arma
       tags:
-        - WeaponCategory
+        - Categoria de Arma
       description: Cria uma nova categoria de arma com base nos dados fornecidos.
       requestBody:
         required: true
@@ -56,7 +56,7 @@ paths:
     get:
       summary: Obter Detalhes da Categoria de Arma por ID
       tags:
-        - WeaponCategory
+        - Categoria de Arma
       description: Retorna os detalhes de uma categoria de arma específica por ID.
       parameters:
         - in: path
@@ -84,7 +84,7 @@ paths:
     patch:
       summary: Atualizar Categoria de Arma por ID
       tags:
-        - WeaponCategory
+        - Categoria de Arma
       description: Atualiza uma categoria de arma existente com base nos dados fornecidos.
       parameters:
         - in: path
@@ -128,7 +128,7 @@ paths:
     delete:
       summary: Excluir Categoria de Arma por ID
       tags:
-        - WeaponCategory
+        - Categoria de Arma
       description: Exclui uma categoria de arma existente com base no ID fornecido.
       parameters:
         - in: path
