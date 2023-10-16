@@ -4,6 +4,7 @@ import { RangeRoutes } from './Range/range.route';
 import { HoldTypeRoutes } from './HoldType/holdType.route';
 import { DamageTypeRoutes } from './DamageType/damageType.route';
 import { WeaponCategoryRoutes } from './WeaponCategory/weaponCategory.route';
+import { CombatRoleRoutes } from './CombatRole/combatRole.route';
 import DefaultErrors from './Errors/defaultErrors';
 
 const routes = Router();
@@ -13,6 +14,7 @@ routes.use('/range', RangeRoutes);
 routes.use('/hold-type', HoldTypeRoutes);
 routes.use('/damage-type', DamageTypeRoutes);
 routes.use('/weapon-category', WeaponCategoryRoutes);
+routes.use('/combat-role', CombatRoleRoutes);
 
 routes.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
   if (err instanceof DefaultErrors) {

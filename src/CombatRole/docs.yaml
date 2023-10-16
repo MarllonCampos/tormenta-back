@@ -1,0 +1,162 @@
+openapi: 3.1.0
+tags:
+  - name: Papel de Combate
+    description: Operações relacionadas ao recurso de Papel de Combate
+
+paths:
+  /combat-role:
+    get:
+      summary: Obter Lista de Papeis de Combate
+      tags:
+        - Papel de Combate
+      responses:
+        '200':
+          description: Papeis de Combate encontrados com sucesso
+          content:
+            application/json:
+              example:
+                message: Alcances encontrados com sucesso
+                data:
+                  - name: Lacaio
+                  - name: Solo
+                  - name: Especial
+
+    post:
+      summary: Criar Novo Papel de Combate
+      tags:
+        - Papel de Combate
+      description: Cria um novo papel de combate com base nos dados fornecidos.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Mago de Distancia
+      responses:
+        '201':
+          description: Papel de Combate criado com sucesso
+          content:
+            application/json:
+              example:
+                message: Papel de Combate criado com sucesso
+                data:
+                  name: Mago de Distancia
+        '400':
+          description: Erro na validação dos dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationDataError'
+  /combat-role/{id}:
+    get:
+      summary: Obter Detalhes do Papel de Combate por ID
+      tags:
+        - Papel de Combate
+      description: Retorna os detalhes de um papel de combate específico por ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do alcance a ser obtido
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Papel de Combate encontrado com sucesso
+          content:
+            application/json:
+              example:
+                message: Papel de Combate encontrado com sucesso
+                data:
+                  name: Mago de Distancia
+        '404':
+          description: Papel de Combate não encontrado
+          content:
+            application/json:
+              example:
+                message: Papel de Combate não encontrado
+    patch:
+      summary: Atualizar Papel de Combate por ID
+      tags:
+        - Papel de Combate
+      description: Atualiza um papel de combate existente com base nos dados fornecidos.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do alcance a ser atualizado
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Mago sem Distancia
+      responses:
+        '200':
+          description: Papel de Combate atualizado com sucesso
+          content:
+            application/json:
+              example:
+                message: O alcance foi atualizado
+                data:
+                  name: Mago sem Distancia
+        '400':
+          description: Erro na validação dos dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationDataError'
+        '404':
+          description: Papel de Combate não encontrado
+          content:
+            application/json:
+              example:
+                message: Papel de Combate não encontrado
+    delete:
+      summary: Excluir Papel de Combate por ID
+      tags:
+        - Papel de Combate
+      description: Exclui um papel de combate existente com base no ID fornecido.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do papel de combate a ser excluído
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Papel de Combate excluído com sucessos
+        '400':
+          description: Erro na validação dos dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationDataError'
+
+components:
+  schemas:
+    ValidationDataError:
+      type: object
+      properties:
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            type: string
+            example:
+              - 'O campo de nome [name] não deve estar vazio'
