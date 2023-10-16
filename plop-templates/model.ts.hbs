@@ -1,8 +1,46 @@
-export default class {{pascalCase name}}DTO {
-  private _item: any;
+import * as yup from 'yup';
 
-  constructor(item) {
-    this._item = item
+export interface {{camelCase name}}InputInterface {
+
+}
+
+export default class {{pascalCase name}}DTO {
+  private _{{camelCase name}}: any;
+
+  private {{camelCase name}}Schema = yup.object().shape({
+
+  })
+
+  private update{{pascalCase name}}Schema= yup.object().shape({
+
+  })
+
+  private _defaultYupOptions = {
+    abortEarly: false,
+    stripUnknown: true,
+  };
+
+
+
+  constructor({{camelCase name}}:any) {
+    this._{{camelCase name}} = this.update{{pascalCase name}}Schema.camelCase().cast({{camelCase name}})
+  }
+
+
+  create = (): {{camelCase name}}InputInterface => {
+    const validateNew{{pascalCase name }} = this.{{camelCase name}}Schema.validateSync(this._{{camelCase name}}, this._defaultYupOptions)
+  }
+
+  update = (): {{camelCase name}}InputInterface => {
+    const validated{{pascalCase name}} = this.{{camelCase name}}Schema.validateSync(this._{{camelCase name}}, this._defaultYupOptions)
+
+    return validated{{pascalCase name}}
+  }
+
+  view = (): {{camelCase name}}InputInterface => {
+    const casted{{pascalCase name}} = this.{{camelCase name}}Schema.cast(this._{{camelCase name}}, {
+      stripUnknown: true
+    })
   }
 
 }

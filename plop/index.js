@@ -15,7 +15,6 @@ module.exports = (plop) => {
     ],
     actions: (data) => {
       let defaultPath = '../src/{{pascalCase name}}';
-      const nameLowerCaseNoSpaces = data.name.toLowerCase().replace(/\s/gi, '');
       return [
         // Route
         {
@@ -40,6 +39,12 @@ module.exports = (plop) => {
           type: 'add',
           path: `${defaultPath}/controller.ts`,
           templateFile: '../plop-templates/controller.ts.hbs',
+        },
+        // Error
+        {
+          type: 'add',
+          path: `${defaultPath}/errors.ts`,
+          templateFile: '../plop-templates/errors.ts.hbs',
         },
       ];
     },

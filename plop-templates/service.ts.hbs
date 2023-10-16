@@ -1,5 +1,11 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 import { DefaultArgs } from '@prisma/client/runtime/library';
+import { {{camelCase name}}InputInterface } from './model.ts'
+
+interface Update {
+  id: number;
+  update{{pascalCase name}}: {{camelCase name}}InputInterface;
+}
 
 class {{pascalCase name}}Service {
   private repository: Prisma.{{lowerCaseNoSpaces name}}Delegate<DefaultArgs>;
@@ -9,20 +15,44 @@ class {{pascalCase name}}Service {
   }
 
   index = async () => {
-    const {{lowerCaseNoSpaces name}} = await this.repository.findMany();
-    return {{lowerCaseNoSpaces name}};
+    const {{camelCase name}} = await this.repository.findMany({
+      select: {
+        field: true
+      }
+    });
+    return {{camelCase name}};
   };
-   show = async () => {
-    return null;
+
+   show = async (id: number) => {
+    return await this.repository.findUnique({
+      where: {
+        id
+      }
+    })
   }
-  create = async ()  =>{
-    return null;
+
+  create = async (new{{pascalCase name}}: {{camelCase name}}InputInterface)  =>{
+    return await this.repository.create({
+      data: new{{pascalCase name}}
+    })
   }
-  update= async  () => {
-    return null;
+
+  update = async  ({id, update{{pascalCase name}} }: Update) => {
+    return await this.repository.update({
+      where: {
+        id
+      },
+      data: {
+        ...update{{pascalCase name}}
+      }
+    })
   }
-  delete = async () => {
-    return null;
+  delete = async (id: number) => {
+    return await this.repository.delete({
+      where: {
+        id
+      }
+    })
   }
 }
 

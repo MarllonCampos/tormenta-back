@@ -15,20 +15,4 @@ const controller = new {{pascalCase name}}Controller();
 
 {{pascalCase name}}Routes.delete('/:id', controller.delete);
 
-{{pascalCase name}}.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-  if (err instanceof {{pascalCase name}}) {
-    const sendObject: {
-      message: string;
-      data?: string[];
-    } = {
-      message: err.message,
-    };
-    if (err.errors.length > 0) sendObject.data = err.errors;
-    return res.status(400).send(sendObject);
-  }
-
-  console.log('Error Middleware', err, err.constructor.name);
-  res.status(500).send({ message: 'Erro interno no servidor' });
-});
-
 export { {{pascalCase name}}Routes };

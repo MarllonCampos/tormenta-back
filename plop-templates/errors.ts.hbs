@@ -1,0 +1,17 @@
+import DefaultErrors, { IErrorConstructor } from '../Errors/defaultErrors';
+
+export default class {{pascalCase name}}Errors extends DefaultErrors {
+  errors: string[] = [];
+
+  constructor({ message, errors = [], status = 400 }: IErrorConstructor) {
+    super({ message, errors, status });
+    this.errors = errors;
+    this.status = status;
+
+    Object.setPrototypeOf(this, {{pascalCase name}}Errors.prototype);
+  }
+
+  static {{pascalCase name}}NotFound(): {{pascalCase name}}Errors {
+    return new {{pascalCase name}}Errors({ message: 'O [alterar isso] informado não foi encontrado', status: 404 });
+  }
+}

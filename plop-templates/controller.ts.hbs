@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import {{pascalCase name}}Service from './service'
 class {{pascalCase name}}Controller {
   private service: {{pascalCase name}}Service;
@@ -6,18 +6,20 @@ class {{pascalCase name}}Controller {
     this.service = new {{pascalCase name}}Service();
   }
 
-  index = async (req: Request, res: Response) => {
+  index = async (req: Request, res: Response, next: NextFunction) => {
     const {{camelCase name}} = await this.service.index();
     return res.json({{camelCase name}});
   };
-  show = async (req: Request, res: Response) => {
+  show = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const {id} = req.params
       const formattedId = Number(id)
+      if (isNaN(formattedId)) throw {{pascalCase name}}Errors.IdMustBeAnumber();
+
       const specificItem = await this.service.show(formattedId)
 
-      if(!specificItem) throw Error.SpecificNotFound()
-      const {{pascalCase name}}DTO = {{pascalCase name}}DTO(specificItem)
+      if(!specificItem) throw {{pascalCase name}}.{{pascalCase name}}NotFound()
+      const {{pascalCase name}}DTO = new {{pascalCase name}}DTO(specificItem)
       const normalizedSpecific = {{pascalCase name}}DTO.view()
       return res.status(200).send({
         message: 'Specific encontradx com sucessx',
@@ -27,21 +29,21 @@ class {{pascalCase name}}Controller {
       next(error)
     }
   }
-  store = async (req: Request, res: Response) => {
+  store = async (req: Request, res: Response, next: NextFunction) => {
     try {
 
     } catch(error){
       next(error)
     }
   }
-  update = async (req: Request, res: Response) => {
+  update = async (req: Request, res: Response, next: NextFunction) => {
     try {
 
     } catch(error){
       next(error)
     }
   }
-  delete = async (req: Request, res: Response) => {
+  delete = async (req: Request, res: Response, next: NextFunction) => {
     try {
 
     } catch(error){
