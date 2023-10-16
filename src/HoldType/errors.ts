@@ -1,29 +1,16 @@
-export default class HoldTypeErrors extends Error {
+import DefaultErrors, { IErrorConstructor } from '../Errors/defaultErrors';
+
+export default class HoldTypeErrors extends DefaultErrors {
   errors: string[] = [];
 
-  constructor(message: string, errors: string[] = []) {
-    super(message);
+  constructor({ message, errors = [], status = 400 }: IErrorConstructor) {
+    super({ message, errors, status });
     this.errors = errors;
+    this.status = status;
     Object.setPrototypeOf(this, HoldTypeErrors.prototype);
   }
 
-  static ValidationErrors(errors: string[] = []): HoldTypeErrors {
-    return new HoldTypeErrors('Houve um erro com a validação dos dados', errors);
-  }
-
-  static DefaultErrorMessage(errors: string[] = []): HoldTypeErrors {
-    return new HoldTypeErrors('Existem erros a serem corrigidos, verifique e corrija-os', errors);
-  }
-
   static HoldTypeNotFound(): HoldTypeErrors {
-    return new HoldTypeErrors('A empunhadura informada não foi encontrada');
-  }
-
-  static NoFieldsToUpdate(): HoldTypeErrors {
-    return new HoldTypeErrors('Não há campos a serem alterados');
-  }
-
-  static IdMustBeAnumber(): HoldTypeErrors {
-    return new HoldTypeErrors('O parametro da rota deve ser um número inteiro');
+    return new HoldTypeErrors({ message: 'A empunhadura informada não foi encontrada', status: 404 });
   }
 }
