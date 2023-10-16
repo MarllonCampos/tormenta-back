@@ -1,28 +1,16 @@
-export default class WeaponErrors extends Error {
+import DefaultErrors, { IErrorConstructor } from '../Errors/defaultErrors';
+
+export default class WeaponErrors extends DefaultErrors {
   errors: string[] = [];
 
-  constructor(message: string, errors: string[] = []) {
-    super(message);
+  constructor({ message, errors = [], status = 400 }: IErrorConstructor) {
+    super({ message, errors, status });
     this.errors = errors;
+    this.status = status;
     Object.setPrototypeOf(this, WeaponErrors.prototype);
   }
 
-  static ValidationErrors(errors: string[] = []): WeaponErrors {
-    return new WeaponErrors('Houve um erro com a validação dos dados', errors);
-  }
-
-  static DefaultErrorMessage(errors: string[] = []): WeaponErrors {
-    return new WeaponErrors('Existem erros a serem corrigidos, verifique e corrija-os', errors);
-  }
-
   static WeaponNotFound(): WeaponErrors {
-    return new WeaponErrors('A arma informada não foi encontrada não foi encontrada');
-  }
-
-  static NoFieldsToUpdate(): WeaponErrors {
-    return new WeaponErrors('Não há campos a serem alterados');
-  }
-  static IdMustBeAnumber(): WeaponErrors {
-    return new WeaponErrors('O parametro da rota deve ser um número inteiro');
+    return new WeaponErrors({ message: 'A arma informada não foi encontrada', status: 404 });
   }
 }
