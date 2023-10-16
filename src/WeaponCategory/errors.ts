@@ -1,29 +1,14 @@
-export default class WeaponCategoryErrors extends Error {
+import DefaultErrors, { IErrorConstructor } from './../Errors/defaultErrors';
+export default class WeaponCategoryErrors extends DefaultErrors {
   errors: string[] = [];
 
-  constructor(message: string, errors: string[] = []) {
-    super(message);
+  constructor({ message, errors = [], status = 400 }: IErrorConstructor) {
+    super({ message, errors, status });
     this.errors = errors;
+    this.status = status;
     Object.setPrototypeOf(this, WeaponCategoryErrors.prototype);
   }
-
-  static ValidationErrors(errors: string[] = []): WeaponCategoryErrors {
-    return new WeaponCategoryErrors('Houve um erro com a validação dos dados', errors);
-  }
-
-  static DefaultErrorMessage(errors: string[] = []): WeaponCategoryErrors {
-    return new WeaponCategoryErrors('Existem erros a serem corrigidos, verifique e corrija-os', errors);
-  }
-
   static WeaponCategoryNotFound(): WeaponCategoryErrors {
-    return new WeaponCategoryErrors('A categoria de arma informada não foi encontrada');
-  }
-
-  static NoFieldsToUpdate(): WeaponCategoryErrors {
-    return new WeaponCategoryErrors('Não há campos a serem alterados');
-  }
-
-  static IdMustBeAnumber(): WeaponCategoryErrors {
-    return new WeaponCategoryErrors('O parametro da rota deve ser um número inteiro');
+    return new WeaponCategoryErrors({ message: 'A categoria de arma informada não foi encontrada', status: 404 });
   }
 }
