@@ -1,0 +1,182 @@
+openapi: 3.0.0
+info:
+  title: API de Armas
+  description: API para gerenciar informações sobre armas
+  version: 1.0.0
+  tags:
+    - name: Arma
+      description: Operações relacionadas a armas
+
+paths:
+  /weapon:
+    get:
+      summary: Obter todas as armas
+      tags:
+        - Arma
+      responses:
+        '200':
+          description: Resposta bem-sucedida
+          content:
+            application/json:
+              example:
+                message: 'Armas encontradas com sucesso'
+                data:
+                  - name: Adaga
+                    damage: 1d4
+                    critical: 19
+                    melee: true
+                    spaces: 1
+                    default: true
+                    img: null
+
+    post:
+      summary: Criar uma nova arma
+      tags:
+        - Arma
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              name: Adaga
+              damage: 1d4
+              critical: 19
+              melee: true
+              spaces: 1
+              default: true
+              img: null
+      responses:
+        '201':
+          description: Arma criada com sucesso
+          content:
+            application/json:
+              example:
+                message: 'Arma criada com sucesso'
+                data:
+                  name: Adaga
+                  damage: 1d4
+                  critical: 19
+                  melee: true
+                  spaces: 1
+                  default: true
+                  img: null
+
+  /weapon/{id}:
+    get:
+      summary: Obter uma arma específica pelo ID
+      tags:
+        - Arma
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID da arma
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Resposta bem-sucedida
+          content:
+            application/json:
+              example:
+                message: 'Arma encontrada com sucesso'
+                data:
+                  name: Adaga
+                  damage: 1d4
+                  critical: 19
+                  melee: true
+                  spaces: 1
+                  default: true
+                  img: null
+        '404':
+          description: Arma não encontrada
+          content:
+            application/json:
+              example:
+                message: Arma não encontrada
+
+    put:
+      summary: Atualizar uma arma pelo ID
+      tags:
+        - Arma
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID da arma
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              name: Adaga
+              damage: 1d4
+              critical: 19
+              melee: true
+              spaces: 1
+              default: true
+              img: null
+      responses:
+        '200':
+          description: Arma atualizada com sucesso
+          content:
+            application/json:
+              example:
+                message: 'Arma atualizada com sucesso'
+                data:
+                  name: Adaga
+                  damage: 1d4
+                  critical: 19
+                  melee: true
+                  spaces: 1
+                  default: true
+                  img: null
+        '400':
+          description: Erro na validação dos dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationDataError'
+        '404':
+          description: Arma não encontrada
+          content:
+            application/json:
+              example:
+                message: Arma não encontrada
+
+    delete:
+      summary: Excluir uma arma pelo ID
+      tags:
+        - Arma
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID da arma
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Arma excluída com sucesso
+        '404':
+          description: Arma não encontrada
+          content:
+            application/json:
+              example:
+                message: Arma não encontrada
+
+components:
+  schemas:
+    ValidationDataError:
+      type: object
+      properties:
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            type: string
+            example:
+              - O campo de nome [name] não deve estar vazio
