@@ -1,29 +1,16 @@
-export default class RangeErrors extends Error {
+import DefaultErrors, { IErrorConstructor } from '../Errors/defaultErrors';
+
+export default class RangeErrors extends DefaultErrors {
   errors: string[] = [];
 
-  constructor(message: string, errors: string[] = []) {
-    super(message);
+  constructor({ message, errors = [], status = 400 }: IErrorConstructor) {
+    super({ message, errors, status });
     this.errors = errors;
+    this.status = status;
     Object.setPrototypeOf(this, RangeErrors.prototype);
   }
 
-  static ValidationErrors(errors: string[] = []): RangeErrors {
-    return new RangeErrors('Houve um erro com a validação dos dados', errors);
-  }
-
-  static DefaultErrorMessage(errors: string[] = []): RangeErrors {
-    return new RangeErrors('Existem erros a serem corrigidos, verifique e corrija-os', errors);
-  }
-
   static RangeNotFound(): RangeErrors {
-    return new RangeErrors('O alcance informado não foi encontrado');
-  }
-
-  static NoFieldsToUpdate(): RangeErrors {
-    return new RangeErrors('Não há campos a serem alterados');
-  }
-
-  static IdMustBeAnumber(): RangeErrors {
-    return new RangeErrors('O parametro da rota deve ser um número inteiro');
+    return new RangeErrors({ message: 'O alcance informado não foi encontrado', status: 404 });
   }
 }
