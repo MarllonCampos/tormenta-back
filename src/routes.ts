@@ -6,6 +6,7 @@ import { DamageTypeRoutes } from './DamageType/damageType.route';
 import { WeaponCategoryRoutes } from './WeaponCategory/weaponCategory.route';
 import { CombatRoleRoutes } from './CombatRole/combatRole.route';
 import { CreatureSizeRoutes } from './CreatureSize/creatureSize.route';
+import { CreatureTypeRoutes } from './CreatureType/creatureType.route';
 
 import DefaultErrors from './Errors/defaultErrors';
 
@@ -18,6 +19,7 @@ routes.use('/damage-type', DamageTypeRoutes);
 routes.use('/weapon-category', WeaponCategoryRoutes);
 routes.use('/combat-role', CombatRoleRoutes);
 routes.use('/creature-size', CreatureSizeRoutes);
+routes.use('/creature-type', CreatureTypeRoutes);
 
 routes.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
   if (err instanceof DefaultErrors) {

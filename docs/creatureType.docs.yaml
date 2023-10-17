@@ -1,0 +1,155 @@
+openapi: 3.1.0
+tags:
+  - name: Tipo de Criatura
+    description: Operações relacionadas ao recurso de Tipo de Criatura
+
+paths:
+  /creature-type:
+    get:
+      summary: Obter Lista de Tipos de Criatura
+      tags:
+        - Tipo de Criatura
+      responses:
+        '200':
+          description: Tipos de Criatura encontrados com sucesso
+          content:
+            application/json:
+              example:
+                message: Tipos de Criatura encontrados com sucesso
+                data:
+                  - name: Animal
+                  - name: Construto
+                  - name: Humanóide
+
+    post:
+      summary: Criar Novo Tipo de Criatura
+      tags:
+        - Tipo de Criatura
+      description: Cria um novo Tipo de criatura com base nos dados fornecidos.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Animal Faérico
+      responses:
+        '201':
+          description: Tipo de Criatura criado com sucesso
+          content:
+            application/json:
+              example:
+                message: Tipo de Criatura criado com sucesso
+                data:
+                  name: Animal Faérico
+        '400':
+          description: Erro na validação dos dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationThreatError'
+        '404':
+          description: Tipo de Criatura não encontrado
+          content:
+            application/json:
+              example:
+                message: Tipo de Criatura não encontrado
+
+  /creature-type/{id}:
+    get:
+      summary: Obter Detalhes do Tipo de Criatura por ID
+      tags:
+        - Tipo de Criatura
+      description: Retorna os detalhes de um Tipo de criatura específico por ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do Tipo de criatura a ser obtido
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Tipo de Criatura encontrado com sucesso
+          content:
+            application/json:
+              example:
+                message: Tipo de Criatura encontrado com sucesso
+                data:
+                  name: Animal Faérico
+        '404':
+          description: Tipo de Criatura não encontrado
+          content:
+            application/json:
+              example:
+                message: Tipo de Criatura não encontrado
+    patch:
+      summary: Atualizar Tipo de Criatura por ID
+      tags:
+        - Tipo de Criatura
+      description: Atualiza um Tipo de criatura existente com base nos dados fornecidos.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do Tipo de criatura a ser atualizado
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Animal Acídico
+      responses:
+        '200':
+          description: Tipo de Criatura atualizado com sucesso
+          content:
+            application/json:
+              example:
+                message: O Tipo de criatura foi atualizado
+                data:
+                  name: Animal Acídico
+        '400':
+          description: Erro na validação dos dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationThreatError'
+        '404':
+          description: Tipo de Criatura não encontrado
+          content:
+            application/json:
+              example:
+                message: Tipo de Criatura não encontrado
+    delete:
+      summary: Excluir Tipo de Criatura por ID
+      tags:
+        - Tipo de Criatura
+      description: Exclui um Tipo de criatura existente com base no ID fornecido.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do Tipo de criatura a ser excluído
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Tipo de Criatura excluído com sucesso
+        '404':
+          description: Tipo de Criatura não encontrado
+          content:
+            application/json:
+              example:
+                message: Tipo de Criatura não encontrado
