@@ -29,18 +29,22 @@ export default class {{pascalCase name}}DTO {
 
   create = (): {{camelCase name}}InputInterface => {
     const validateNew{{pascalCase name }} = this.{{camelCase name}}Schema.validateSync(this._{{camelCase name}}, this._defaultYupOptions)
+
+    return validateNew{{pascalCase name }}  as {{camelCase name}}InputInterface
   }
 
   update = (): {{camelCase name}}InputInterface => {
     const validated{{pascalCase name}} = this.{{camelCase name}}Schema.validateSync(this._{{camelCase name}}, this._defaultYupOptions)
 
-    return validated{{pascalCase name}}
+    return validated{{pascalCase name}}  as {{camelCase name}}InputInterface
   }
 
   view = (): {{camelCase name}}InputInterface => {
     const casted{{pascalCase name}} = this.{{camelCase name}}Schema.cast(this._{{camelCase name}}, {
       stripUnknown: true
     })
+
+    return casted{{pascalCase name}} as {{camelCase name}}InputInterface
   }
 
 }

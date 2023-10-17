@@ -1,5 +1,9 @@
+import * as yup from 'yup'
 import { Request, Response, NextFunction } from 'express';
 import {{pascalCase name}}Service from './service'
+import {{pascalCase name}}Errors from './errors'
+import {{pascalCase name}}DTO from './model'
+
 class {{pascalCase name}}Controller {
   private service: {{pascalCase name}}Service;
   constructor() {
@@ -18,9 +22,9 @@ class {{pascalCase name}}Controller {
 
       const specificItem = await this.service.show(formattedId)
 
-      if(!specificItem) throw {{pascalCase name}}.{{pascalCase name}}NotFound()
-      const {{pascalCase name}}DTO = new {{pascalCase name}}DTO(specificItem)
-      const normalizedSpecific = {{pascalCase name}}DTO.view()
+      if(!specificItem) throw {{pascalCase name}}Errors.{{pascalCase name}}NotFound()
+      const {{camelCase name}}DTO = new {{pascalCase name}}DTO(specificItem)
+      const normalizedSpecific = {{camelCase name}}DTO.view()
       return res.status(200).send({
         message: 'Specific encontradx com sucessx',
         data: normalizedSpecific 
