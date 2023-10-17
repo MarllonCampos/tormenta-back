@@ -1,0 +1,148 @@
+openapi: 3.1.0
+tags:
+  - name: [alterar]
+    description: Operações relacionadas ao recurso de [alterar]
+
+paths:
+  /{{kebabCase name}}:
+    get:
+      summary: Obter [alterar]
+      tags:
+        - [alterar]
+      responses:
+        '200':
+          description: [alterar] encontrados com sucesso
+          content:
+            application/json:
+              example:
+                message: [alterar] encontrados com sucesso
+                data:
+                  - type: Adjacente
+                  - type: Curto
+                  - type: Médio
+                  - type: Longo
+    post:
+      summary: Criar Novo [alterar]
+      tags:
+        - [alterar]
+      description: Cria um novo [alterar] com base nos dados fornecidos.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  example: Pouco Mágico
+      responses:
+        '201':
+          description: [alterar] criado com sucesso
+          content:
+            application/json:
+              example:
+                message: [alterar] criado com sucesso
+                data:
+                  type: Pouco Mágico
+        '400':
+          description: Erro na validação dos dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Validation[alterar]Error'
+  /{{kebabCase name}}/{id}:
+    get:
+      summary: Obter Detalhes do [alterar] por ID
+      tags:
+        - [alterar]
+      description: Retorna os detalhes de um [alterar] específico por ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do [alterar] a ser obtido
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: [alterar] encontrado com sucesso
+          content:
+            application/json:
+              example:
+                message: [alterar] encontrado com sucesso
+                data:
+                  type: Pouco Mágico
+        '404':
+          description: [alterar] não encontrado
+          content:
+            application/json:
+              example:
+                message: [alterar] não encontrado
+    patch:
+      summary: Atualizar [alterar] por ID
+      tags:
+        - [alterar]
+      description: Atualiza um [alterar] existente com base nos dados fornecidos.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do [alterar] a ser atualizado
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  example: Pouco Curto
+      responses:
+        '200':
+          description: [alterar] atualizado com sucesso
+          content:
+            application/json:
+              example:
+                message: O [alterar] foi atualizado
+                data:
+                  type: Pouco Curto
+        '400':
+          description: Erro na validação dos dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Validation[alterar]Error'
+        '404':
+          description: [alterar] não encontrado
+          content:
+            application/json:
+              example:
+                message: [alterar] não encontrado
+    delete:
+      summary: Excluir [alterar] por ID
+      tags:
+        - [alterar]
+      description: Exclui um [alterar] existente com base no ID fornecido.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do [alterar] a ser excluído
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: [alterar] excluído com sucessos
+        '404':
+          description: [alterar] não encontrado
+          content:
+            application/json:
+              example:
+                message: [alterar] não encontrado

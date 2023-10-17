@@ -15,6 +15,7 @@ module.exports = (plop) => {
     ],
     actions: (data) => {
       let defaultPath = '../src/{{pascalCase name}}';
+      let docsDefaultPath = '../docs';
       return [
         // Route
         {
@@ -45,6 +46,12 @@ module.exports = (plop) => {
           type: 'add',
           path: `${defaultPath}/errors.ts`,
           templateFile: '../plop-templates/errors.ts.hbs',
+        },
+        // Docs
+        {
+          type: 'add',
+          path: `${docsDefaultPath}/{{camelCase name}}.docs.yaml`,
+          templateFile: '../plop-templates/docs.yaml.hbs',
         },
       ];
     },
