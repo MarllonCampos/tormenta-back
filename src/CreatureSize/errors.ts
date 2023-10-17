@@ -12,6 +12,6 @@ export default class CreatureSizeErrors extends DefaultErrors {
   }
 
   static CreatureSizeNotFound(): CreatureSizeErrors {
-    return new CreatureSizeErrors({ message: 'O [alterar isso] informado não foi encontrado', status: 404 });
+    return new CreatureSizeErrors({ message: 'O tamanho de criatura informado não foi encontrado', status: 404 });
   }
 }
