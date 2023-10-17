@@ -14,7 +14,15 @@ app.use(routes);
 app.get('/', (_, res: Response) => {
   res.send('Server Working Just Fine');
 });
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
+app.use(
+  '/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpecs, {
+    swaggerOptions: {
+      docExpansion: 'none',
+    },
+  })
+);
 app.listen(process.env.PORT || 3000, () => {
   console.log(`🔥 Server Running on Port: ${process.env.PORT} 🔥`);
 });
