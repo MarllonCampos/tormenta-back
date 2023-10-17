@@ -50,7 +50,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ValidationCreatureError'
+                $ref: '#/components/schemas/ValidationThreatError'
   /combat-role/{id}:
     get:
       summary: Obter Detalhes do Papel de Combate por ID
@@ -117,7 +117,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ValidationCreatureError'
+                $ref: '#/components/schemas/ValidationThreatError'
         '404':
           description: Papel de Combate não encontrado
           content:
@@ -140,16 +140,22 @@ paths:
       responses:
         '204':
           description: Papel de Combate excluído com sucessos
+        '404':
+          description: Papel de Combate não encontrado
+          content:
+            application/json:
+              example:
+                message: Papel de Combate não encontrado
         '400':
           description: Erro na validação dos dados
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ValidationCreatureError'
+                $ref: '#/components/schemas/ValidationThreatError'
 
 components:
   schemas:
-    ValidationCreatureError:
+    ValidationThreatError:
       type: object
       properties:
         message:

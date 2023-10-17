@@ -50,7 +50,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ValidationCreatureError'
+                $ref: '#/components/schemas/ValidationThreatError'
   /creature-size/{id}:
     get:
       summary: Obter Detalhes do Tamanho de Criatura por ID
@@ -117,7 +117,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ValidationCreatureError'
+                $ref: '#/components/schemas/ValidationThreatError'
         '404':
           description: Tamanho de Criatura não encontrado
           content:
@@ -149,7 +149,7 @@ paths:
 
 components:
   schemas:
-    ValidationCreatureError:
+    ValidationThreatError:
       type: object
       properties:
         message:
