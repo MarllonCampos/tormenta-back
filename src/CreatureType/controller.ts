@@ -12,7 +12,10 @@ class CreatureTypeController {
 
   index = async (req: Request, res: Response, next: NextFunction) => {
     const creatureType = await this.service.index();
-    return res.json(creatureType);
+    return res.json({
+      message: 'Tipos de criatura encontrados com sucesso',
+      data: creatureType,
+    });
   };
 
   show = async (req: Request, res: Response, next: NextFunction) => {
