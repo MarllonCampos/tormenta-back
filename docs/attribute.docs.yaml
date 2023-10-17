@@ -1,0 +1,148 @@
+openapi: 3.1.0
+tags:
+  - name: Atributo
+    description: Operações relacionadas ao recurso de Atributo
+
+paths:
+  /attribute:
+    get:
+      summary: Obter Atributo
+      tags:
+        - Atributo
+      responses:
+        '200':
+          description: Atributos encontrados com sucesso
+          content:
+            application/json:
+              example:
+                message: Atributos encontrados com sucesso
+                data:
+                  - name: Int
+                  - name: Sab
+                  - name: Con
+                  - name: Car
+    post:
+      summary: Criar Novo Atributo
+      tags:
+        - Atributo
+      description: Cria um novo Atributo com base nos dados fornecidos.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Pres
+      responses:
+        '201':
+          description: Atributo criado com sucesso
+          content:
+            application/json:
+              example:
+                message: Atributo criado com sucesso
+                data:
+                  name: Pres
+        '400':
+          description: Erro na validação dos dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationThreatError'
+  /attribute/{id}:
+    get:
+      summary: Obter Detalhes do Atributo por ID
+      tags:
+        - Atributo
+      description: Retorna os detalhes de um Atributo específico por ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do Atributo a ser obtido
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Atributo encontrado com sucesso
+          content:
+            application/json:
+              example:
+                message: Atributo encontrado com sucesso
+                data:
+                  name: Pres
+        '404':
+          description: Atributo não encontrado
+          content:
+            application/json:
+              example:
+                message: Atributo não encontrado
+    patch:
+      summary: Atualizar Atributo por ID
+      tags:
+        - Atributo
+      description: Atualiza um Atributo existente com base nos dados fornecidos.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do Atributo a ser atualizado
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Pres
+      responses:
+        '200':
+          description: Atributo atualizado com sucesso
+          content:
+            application/json:
+              example:
+                message: O Atributo foi atualizado
+                data:
+                  name: Pres
+        '400':
+          description: Erro na validação dos dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationThreatError'
+        '404':
+          description: Atributo não encontrado
+          content:
+            application/json:
+              example:
+                message: Atributo não encontrado
+    delete:
+      summary: Excluir Atributo por ID
+      tags:
+        - Atributo
+      description: Exclui um Atributo existente com base no ID fornecido.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do Atributo a ser excluído
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Atributo excluído com sucessos
+        '404':
+          description: Atributo não encontrado
+          content:
+            application/json:
+              example:
+                message: Atributo não encontrado

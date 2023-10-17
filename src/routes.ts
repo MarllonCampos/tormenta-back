@@ -9,6 +9,7 @@ import { CreatureSizeRoutes } from './CreatureSize/creatureSize.route';
 import { CreatureTypeRoutes } from './CreatureType/creatureType.route';
 
 import DefaultErrors from './Errors/defaultErrors';
+import { AttributeRoutes } from './Attribute/attribute.route';
 
 const routes = Router();
 
@@ -20,6 +21,7 @@ routes.use('/weapon-category', WeaponCategoryRoutes);
 routes.use('/combat-role', CombatRoleRoutes);
 routes.use('/creature-size', CreatureSizeRoutes);
 routes.use('/creature-type', CreatureTypeRoutes);
+routes.use('/attribute', AttributeRoutes);
 
 routes.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
   if (err instanceof DefaultErrors) {
