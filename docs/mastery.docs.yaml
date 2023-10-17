@@ -1,0 +1,204 @@
+openapi: 3.1.0
+tags:
+  - name: Perícia
+    description: Operações relacionadas ao recurso de Perícia
+
+paths:
+  /mastery:
+    get:
+      summary: Obter Perícias
+      tags:
+        - Perícia
+      responses:
+        '200':
+          description: Perícias encontradas com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Perícias encontradas com sucesso
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                          example: Nova Perícia x5
+                        armorPenalty:
+                          type: boolean
+                          example: false
+                        trained:
+                          type: boolean
+                          example: true
+    post:
+      summary: Criar Novo Perícia
+      tags:
+        - Perícia
+      description: Cria um novo Perícia com base nos dados fornecidos.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  example: Nova Perícia x5
+      responses:
+        '201':
+          description: Perícia criada com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Perícia criada com sucesso
+                  data:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: Nova Perícia x5
+                      armorPenalty:
+                        type: boolean
+                        example: false
+                      trained:
+                        type: boolean
+                        example: true
+        '400':
+          description: Erro na validação dos dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationWeaponError'
+  /mastery/{id}:
+    get:
+      summary: Obter Detalhes da Perícia por ID
+      tags:
+        - Perícia
+      description: Retorna os detalhes de uma Perícia específica por ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do Perícia a ser obtido
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Perícia encontrada com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Perícia criada com sucesso
+                  data:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: Nova Perícia x5
+                      armorPenalty:
+                        type: boolean
+                        example: false
+                      trained:
+                        type: boolean
+                        example: true
+        '404':
+          description: Perícia não encontrada
+          content:
+            application/json:
+              example:
+                message: Perícia não encontrada
+    patch:
+      summary: Atualizar Perícia por ID
+      tags:
+        - Perícia
+      description: Atualiza um Perícia existente com base nos dados fornecidos.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do Perícia a ser atualizado
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  example: Nova Perícia x10
+
+      responses:
+        '200':
+          description: Perícia atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: A perícia foi atualizada
+                  data:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        example: Nova Perícia x5
+                      armorPenalty:
+                        type: boolean
+                        example: false
+                      trained:
+                        type: boolean
+                        example: true
+        '400':
+          description: Erro na validação dos dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationWeaponError'
+        '404':
+          description: Perícia não encontrada
+          content:
+            application/json:
+              example:
+                message: Perícia não encontrada
+    delete:
+      summary: Excluir Perícia por ID
+      tags:
+        - Perícia
+      description: Exclui um Perícia existente com base no ID fornecido.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do Perícia a ser excluído
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Perícia excluído com sucessos
+        '404':
+          description: Perícia não encontrada
+          content:
+            application/json:
+              example:
+                message: Perícia não encontrada
