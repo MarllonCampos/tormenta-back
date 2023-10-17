@@ -1,31 +1,31 @@
 openapi: 3.1.0
 tags:
-  - name: Alcance
-    description: Operações relacionadas ao recurso de Alcance
+  - name: Tipo de Dano
+    description: Operações relacionadas ao recurso de Tipo de Dano
 
 paths:
-  /range:
+  /damage-type:
     get:
-      summary: Obter Lista de Alcances
+      summary: Obter Lista de Tipos de Dano
       tags:
-        - Alcance
+        - Tipo de Dano
       responses:
         '200':
-          description: Alcances encontrados com sucesso
+          description: Tipos de Dano encontrados com sucesso
           content:
             application/json:
               example:
-                message: Alcances encontrados com sucesso
+                message: Tipos de Dano encontrados com sucesso
                 data:
-                  - type: Adjacente
-                  - type: Curto
-                  - type: Médio
-                  - type: Longo
+                  - type: Corte
+                  - type: Impacto
+                  - type: Perfuração
+
     post:
-      summary: Criar Novo Alcance
+      summary: Criar Novo Tipo de Dano
       tags:
-        - Alcance
-      description: Cria um novo alcance com base nos dados fornecidos.
+        - Tipo de Dano
+      description: Cria um novo tipo de dano com base nos dados fornecidos.
       requestBody:
         required: true
         content:
@@ -35,61 +35,61 @@ paths:
               properties:
                 type:
                   type: string
-                  example: Pouco Mágico
+                  example: Fogo
       responses:
         '201':
-          description: Alcance criado com sucesso
+          description: Tipo de Dano criado com sucesso
           content:
             application/json:
               example:
-                message: Alcance criado com sucesso
+                message: Tipo de Dano criado com sucesso
                 data:
-                  type: Pouco Mágico
+                  type: Fogo
         '400':
           description: Erro na validação dos dados
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ValidationDataError'
-  /range/{id}:
+  /damage-type/{id}:
     get:
-      summary: Obter Detalhes do Alcance por ID
+      summary: Obter Detalhes do Tipo de Dano por ID
       tags:
-        - Alcance
-      description: Retorna os detalhes de um alcance específico por ID.
+        - Tipo de Dano
+      description: Retorna os detalhes de um tipo de dano específico por ID.
       parameters:
         - in: path
           name: id
           required: true
-          description: ID do alcance a ser obtido
+          description: ID do tipo de dano a ser obtido
           schema:
             type: integer
             format: int64
       responses:
         '200':
-          description: Alcance encontrado com sucesso
+          description: Tipo de Dano encontrado com sucesso
           content:
             application/json:
               example:
-                message: Alcance encontrado com sucesso
+                message: Tipo de Dano encontrado com sucesso
                 data:
-                  type: Pouco Mágico
+                  type: Fogo
         '404':
-          description: Alcance não encontrado
+          description: Tipo de Dano não encontrado
           content:
             application/json:
               example:
-                message: Alcance não encontrado
+                message: Tipo de Dano não encontrado
     patch:
-      summary: Atualizar Alcance por ID
+      summary: Atualizar Tipo de Dano por ID
       tags:
-        - Alcance
-      description: Atualiza um alcance existente com base nos dados fornecidos.
+        - Tipo de Dano
+      description: Atualiza um tipo de dano existente com base nos dados fornecidos.
       parameters:
         - in: path
           name: id
           required: true
-          description: ID do alcance a ser atualizado
+          description: ID do tipo de dano a ser atualizado
           schema:
             type: integer
             format: int64
@@ -102,16 +102,16 @@ paths:
               properties:
                 type:
                   type: string
-                  example: Pouco Curto
+                  example: Gelo
       responses:
         '200':
-          description: Alcance atualizado com sucesso
+          description: Tipo de Dano atualizado com sucesso
           content:
             application/json:
               example:
-                message: O alcance foi atualizado
+                message: O tipo de dano foi atualizado
                 data:
-                  type: Pouco Curto
+                  type: Gelo
         '400':
           description: Erro na validação dos dados
           content:
@@ -119,44 +119,36 @@ paths:
               schema:
                 $ref: '#/components/schemas/ValidationDataError'
         '404':
-          description: Alcance não encontrado
+          description: Tipo de Dano não encontrado
           content:
             application/json:
               example:
-                message: Alcance não encontrado
+                message: Tipo de Dano não encontrado
     delete:
-      summary: Excluir Alcance por ID
+      summary: Excluir Tipo de Dano por ID
       tags:
-        - Alcance
-      description: Exclui um alcance existente com base no ID fornecido.
+        - Tipo de Dano
+      description: Exclui um tipo de dano existente com base no ID fornecido.
       parameters:
         - in: path
           name: id
           required: true
-          description: ID do alcance a ser excluído
+          description: ID do tipo de dano a ser excluído
           schema:
             type: integer
             format: int64
       responses:
         '204':
-          description: Alcance excluído com sucessos
+          description: Tipo de Dano excluído com sucesso
         '400':
           description: Erro na validação dos dados
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ValidationDataError'
-
-components:
-  schemas:
-    ValidationDataError:
-      type: object
-      properties:
-        message:
-          type: string
-        data:
-          type: array
-          items:
-            type: string
-            example:
-              - 'O campo de nome [type] não deve estar vazio'
+                $ref: '#/components/schemas/ValidationWeaponError'
+        '404':
+          description: Tipo de Dano não encontrado
+          content:
+            application/json:
+              example:
+                message: Tipo de Dano não encontrado

@@ -1,0 +1,26 @@
+openapi: 3.1.0
+
+components:
+  schemas:
+    ValidationCreatureError:
+      type: object
+      properties:
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            type: string
+            example:
+              - 'O campo de nome [name] não deve estar vazio'
+    ValidationWeaponError:
+      type: object
+      properties:
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            type: string
+            example:
+              - 'O campo de nome [type] não deve estar vazio'

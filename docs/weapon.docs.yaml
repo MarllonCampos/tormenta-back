@@ -138,7 +138,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ValidationDataError'
+                $ref: '#/components/schemas/ValidationWeaponError'
         '404':
           description: Arma não encontrada
           content:
@@ -166,17 +166,3 @@ paths:
             application/json:
               example:
                 message: Arma não encontrada
-
-components:
-  schemas:
-    ValidationDataError:
-      type: object
-      properties:
-        message:
-          type: string
-        data:
-          type: array
-          items:
-            type: string
-            example:
-              - O campo de nome [name] não deve estar vazio

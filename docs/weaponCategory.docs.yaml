@@ -2,7 +2,6 @@ openapi: 3.1.0
 tags:
   - name: Categoria de Arma
     description: Operações relacionadas ao recurso de WeaponCategory
-
 paths:
   /weapon-category:
     get:
@@ -51,7 +50,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ValidationDataError'
+                $ref: '#/components/schemas/ValidationWeaponError'
   /weapon-category/{id}:
     get:
       summary: Obter Detalhes da Categoria de Arma por ID
@@ -118,7 +117,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ValidationDataError'
+                $ref: '#/components/schemas/ValidationWeaponError'
         '404':
           description: Categoria de arma não encontrada
           content:
@@ -146,24 +145,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ValidationDataError'
+                $ref: '#/components/schemas/ValidationWeaponError'
         '404':
           description: Categoria de arma não encontrada
           content:
             application/json:
               example:
                 message: Categoria de arma não encontrada
-
-components:
-  schemas:
-    ValidationDataError:
-      type: object
-      properties:
-        message:
-          type: string
-        data:
-          type: array
-          items:
-            type: string
-            example:
-              - O campo de nome [name] não deve estar vazio
