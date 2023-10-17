@@ -37,6 +37,10 @@ class {{pascalCase name}}Controller {
     try {
 
     } catch(error){
+       if (error instanceof yup.ValidationError) {
+        const yupErrors = error.errors;
+        return next({{pascalCase name}}Errors.ValidationErrors([...yupErrors]));
+      }
       next(error)
     }
   }
@@ -44,6 +48,10 @@ class {{pascalCase name}}Controller {
     try {
 
     } catch(error){
+      if (error instanceof yup.ValidationError) {
+        const yupErrors = error.errors;
+        return next({{pascalCase name}}Errors.ValidationErrors([...yupErrors]));
+      }
       next(error)
     }
   }
