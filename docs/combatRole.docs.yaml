@@ -152,17 +152,3 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ValidationThreatError'
-
-components:
-  schemas:
-    ValidationThreatError:
-      type: object
-      properties:
-        message:
-          type: string
-        data:
-          type: array
-          items:
-            type: string
-            example:
-              - 'O campo de nome [name] não deve estar vazio'

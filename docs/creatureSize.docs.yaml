@@ -146,17 +146,3 @@ paths:
             application/json:
               example:
                 message: Tamanho de Criatura não encontrado
-
-components:
-  schemas:
-    ValidationThreatError:
-      type: object
-      properties:
-        message:
-          type: string
-        data:
-          type: array
-          items:
-            type: string
-            example:
-              - 'O campo de nome [name] não deve estar vazio'
