@@ -1,0 +1,162 @@
+openapi: 3.1.0
+tags:
+  - name: Tamanho de Criatura
+    description: Operações relacionadas ao recurso de Tamanho de Criatura
+
+paths:
+  /creature-size:
+    get:
+      summary: Obter Lista de Tamanhos de Criatura
+      tags:
+        - Tamanho de Criatura
+      responses:
+        '200':
+          description: Tamanhos de Criatura encontrados com sucesso
+          content:
+            application/json:
+              example:
+                message: Tamanhos de Criatura encontrados com sucesso
+                data:
+                  - name: Pequeno
+                  - name: Médio
+                  - name: Grande
+
+    post:
+      summary: Criar Novo Tamanho de Criatura
+      tags:
+        - Tamanho de Criatura
+      description: Cria um novo tamanho de criatura com base nos dados fornecidos.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Gigaenorme
+      responses:
+        '201':
+          description: Tamanho de Criatura criado com sucesso
+          content:
+            application/json:
+              example:
+                message: Tamanho de Criatura criado com sucesso
+                data:
+                  name: Gigaenorme
+        '400':
+          description: Erro na validação dos dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationCreatureError'
+  /creature-size/{id}:
+    get:
+      summary: Obter Detalhes do Tamanho de Criatura por ID
+      tags:
+        - Tamanho de Criatura
+      description: Retorna os detalhes de um tamanho de criatura específico por ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do tamanho de criatura a ser obtido
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Tamanho de Criatura encontrado com sucesso
+          content:
+            application/json:
+              example:
+                message: Tamanho de Criatura encontrado com sucesso
+                data:
+                  name: Gigaenorme
+        '404':
+          description: Tamanho de Criatura não encontrado
+          content:
+            application/json:
+              example:
+                message: Tamanho de Criatura não encontrado
+    patch:
+      summary: Atualizar Tamanho de Criatura por ID
+      tags:
+        - Tamanho de Criatura
+      description: Atualiza um tamanho de criatura existente com base nos dados fornecidos.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do tamanho de criatura a ser atualizado
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Gigapiquitito
+      responses:
+        '200':
+          description: Tamanho de Criatura atualizado com sucesso
+          content:
+            application/json:
+              example:
+                message: O tamanho de criatura foi atualizado
+                data:
+                  name: Gigapiquitito
+        '400':
+          description: Erro na validação dos dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationCreatureError'
+        '404':
+          description: Tamanho de Criatura não encontrado
+          content:
+            application/json:
+              example:
+                message: Tamanho de Criatura não encontrado
+    delete:
+      summary: Excluir Tamanho de Criatura por ID
+      tags:
+        - Tamanho de Criatura
+      description: Exclui um tamanho de criatura existente com base no ID fornecido.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do tamanho de criatura a ser excluído
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Tamanho de Criatura excluído com sucesso
+        '404':
+          description: Tamanho de Criatura não encontrado
+          content:
+            application/json:
+              example:
+                message: Tamanho de Criatura não encontrado
+
+components:
+  schemas:
+    ValidationCreatureError:
+      type: object
+      properties:
+        message:
+          type: string
+        data:
+          type: array
+          items:
+            type: string
+            example:
+              - 'O campo de nome [name] não deve estar vazio'
