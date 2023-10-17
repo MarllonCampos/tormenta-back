@@ -1,0 +1,154 @@
+openapi: 3.1.0
+tags:
+  - name: Tipo de Empunhadura
+    description: Operações relacionadas ao recurso de Tipo de Empunhadura
+
+paths:
+  /hold-type:
+    get:
+      summary: Obter Lista de Tipos de Empunhadura
+      tags:
+        - Tipo de Empunhadura
+      responses:
+        '200':
+          description: Tipos de Empunhadura encontrados com sucesso
+          content:
+            application/json:
+              example:
+                message: Tipos de Empunhadura encontrados com sucesso
+                data:
+                  - type: Uma Mão
+                  - type: Duas Mãos
+                  - type: Empunhadura Mágica
+
+    post:
+      summary: Criar Novo Tipo de Empunhadura
+      tags:
+        - Tipo de Empunhadura
+      description: Cria um novo tipo de empunhadura com base nos dados fornecidos.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  example: Empunhadura Dupla
+      responses:
+        '201':
+          description: Tipo de Empunhadura criado com sucesso
+          content:
+            application/json:
+              example:
+                message: Tipo de Empunhadura criado com sucesso
+                data:
+                  type: Empunhadura Dupla
+        '400':
+          description: Erro na validação dos dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationWeaponError'
+  /hold-type/{id}:
+    get:
+      summary: Obter Detalhes do Tipo de Empunhadura por ID
+      tags:
+        - Tipo de Empunhadura
+      description: Retorna os detalhes de um tipo de empunhadura específico por ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do tipo de empunhadura a ser obtido
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Tipo de Empunhadura encontrado com sucesso
+          content:
+            application/json:
+              example:
+                message: Tipo de Empunhadura encontrado com sucesso
+                data:
+                  type: Empunhadura Dupla
+        '404':
+          description: Tipo de Empunhadura não encontrado
+          content:
+            application/json:
+              example:
+                message: Tipo de Empunhadura não encontrado
+    patch:
+      summary: Atualizar Tipo de Empunhadura por ID
+      tags:
+        - Tipo de Empunhadura
+      description: Atualiza um tipo de empunhadura existente com base nos dados fornecidos.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do tipo de empunhadura a ser atualizado
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  example: Empunhadura Única
+      responses:
+        '200':
+          description: Tipo de Empunhadura atualizado com sucesso
+          content:
+            application/json:
+              example:
+                message: O tipo de empunhadura foi atualizado
+                data:
+                  type: Empunhadura Única
+        '400':
+          description: Erro na validação dos dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationWeaponError'
+        '404':
+          description: Tipo de Empunhadura não encontrado
+          content:
+            application/json:
+              example:
+                message: Tipo de Empunhadura não encontrado
+    delete:
+      summary: Excluir Tipo de Empunhadura por ID
+      tags:
+        - Tipo de Empunhadura
+      description: Exclui um tipo de empunhadura existente com base no ID fornecido.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do tipo de empunhadura a ser excluído
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Tipo de Empunhadura excluído com sucesso
+        '400':
+          description: Erro na validação dos dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationWeaponError'
+        '404':
+          description: Tipo de Empunhadura não encontrado
+          content:
+            application/json:
+              example:
+                message: Tipo de Empunhadura não encontrado
