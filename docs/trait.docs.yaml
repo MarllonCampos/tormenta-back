@@ -1,0 +1,148 @@
+openapi: 3.1.0
+tags:
+  - name: Característica
+    description: Operações relacionadas ao recurso de Característica
+
+paths:
+  /trait:
+    get:
+      summary: Obter Características
+      tags:
+        - Característica
+      responses:
+        '200':
+          description: Características encontrados com sucesso
+          content:
+            application/json:
+              example:
+                message: Características encontrados com sucesso
+                data:
+                  - name: visão no escuro
+                  - name: faro
+                  - name: visão na penumbra
+                  - name: imunidade a condição petrificado
+    post:
+      summary: Criar Nova Característica
+      tags:
+        - Característica
+      description: Cria uma nova Característica com base nos dados fornecidos.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Respira embaixo d'agua
+      responses:
+        '201':
+          description: Característica criada com sucesso
+          content:
+            application/json:
+              example:
+                message: Característica criada com sucesso
+                data:
+                  name: Respira embaixo d'agua
+        '400':
+          description: Erro na validação dos dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationThreatError'
+  /trait/{id}:
+    get:
+      summary: Obter Detalhes da Característica por ID
+      tags:
+        - Característica
+      description: Retorna os detalhes de uma Característica específico por ID.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID da Característica a ser obtida
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Característica encontrada com sucesso
+          content:
+            application/json:
+              example:
+                message: Característica encontrada com sucesso
+                data:
+                  name: Respira embaixo d'agua
+        '404':
+          description: Característica não encontrada
+          content:
+            application/json:
+              example:
+                message: Característica não encontrada
+    patch:
+      summary: Atualizar Característica por ID
+      tags:
+        - Característica
+      description: Atualiza uma Característica existente com base nos dados fornecidos.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do Característica a ser atualizado
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Respira embaixo do fogo
+      responses:
+        '200':
+          description: Característica atualizado com sucesso
+          content:
+            application/json:
+              example:
+                message: O Característica foi atualizado
+                data:
+                  name: Respira embaixo do fogo
+        '400':
+          description: Erro na validação dos dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationThreatError'
+        '404':
+          description: Característica não encontrada
+          content:
+            application/json:
+              example:
+                message: Característica não encontrada
+    delete:
+      summary: Excluir Característica por ID
+      tags:
+        - Característica
+      description: Exclui uma Característica existente com base no ID fornecido.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: ID do Característica a ser excluído
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Característica excluído com sucessos
+        '404':
+          description: Característica não encontrado
+          content:
+            application/json:
+              example:
+                message: Característica não encontrado

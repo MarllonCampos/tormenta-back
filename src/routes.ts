@@ -9,6 +9,7 @@ import { CreatureSizeRoutes } from './CreatureSize/creatureSize.route';
 import { CreatureTypeRoutes } from './CreatureType/creatureType.route';
 import { AttributeRoutes } from './Attribute/attribute.route';
 import { MasteryRoutes } from './Mastery/mastery.route';
+import { TraitRoutes } from './Trait/trait.route';
 
 import DefaultErrors from './Errors/defaultErrors';
 
@@ -24,6 +25,7 @@ routes.use('/creature-size', CreatureSizeRoutes);
 routes.use('/creature-type', CreatureTypeRoutes);
 routes.use('/attribute', AttributeRoutes);
 routes.use('/mastery', MasteryRoutes);
+routes.use('/trait', TraitRoutes);
 
 routes.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
   if (err instanceof DefaultErrors) {
