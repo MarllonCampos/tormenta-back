@@ -59,8 +59,11 @@ class WeaponController {
     this.weaponCategoryService = new WeaponCategoryService();
   }
 
-  index = async (_req: Request, res: Response, next: NextFunction) => {
+  index = async (req: Request, res: Response, next: NextFunction) => {
     try {
+      const { query } = req;
+      console.log(query);
+
       const weapons = await this.service.index();
       if (weapons.length == 0) return res.json({ message: 'Não há armas cadastradas' });
       return res.json({ message: 'Armas encontradas com sucesso', data: weapons });

@@ -8,12 +8,12 @@ export default class RangeDTO {
   private rangeSchema = yup.object().shape({
     type: yup
       .string()
-      .min(3, 'O campo de nome [type]  deve ter no mínimo 3 caracteres')
-      .required('O campo de nome [type] não deve estar vazio'),
+      .min(3, 'O campo de tipo [type]  deve ter no mínimo 3 caracteres')
+      .required('O campo de tipo [type] não deve estar vazio'),
   });
 
   private updateRangeSchema = yup.object().shape({
-    type: yup.string().min(3, 'O campo de nome [type]  deve ter no mínimo 3 caracteres'),
+    type: yup.string().min(3, 'O campo de tipo [type]  deve ter no mínimo 3 caracteres'),
   });
 
   private _defaultYupOptions = {

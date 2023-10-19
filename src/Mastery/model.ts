@@ -12,16 +12,20 @@ export default class MasteryDTO {
   private masterySchema = yup.object().shape({
     type: yup
       .string()
-      .min(3, 'O campo de nome [type]  deve ter no mínimo 3 caracteres')
-      .required('O campo de nome [type] não deve estar vazio'),
-    trained: yup.boolean().typeError('O campo de nome [trained] deve ser true ou false, 0 ou 1'),
-    armorPenalty: yup.boolean().typeError('O campo de nome [armor_penalty] deve ser true ou false, 0 ou 1'),
+      .min(3, 'O campo de tipo [type]  deve ter no mínimo 3 caracteres')
+      .required('O campo de tipo [type] não deve estar vazio'),
+    trained: yup.boolean().typeError('O campo de treinado [trained] deve ser true ou false, 0 ou 1'),
+    armorPenalty: yup
+      .boolean()
+      .typeError('O campo de penalidade de armadura [armor_penalty] deve ser true ou false, 0 ou 1'),
   });
 
   private updateMasterySchema = yup.object().shape({
-    type: yup.string().min(3, 'O campo de nome [type]  deve ter no mínimo 3 caracteres'),
-    trained: yup.boolean().typeError('O campo de nome [trained] deve ser true ou false, 0 ou 1'),
-    armorPenalty: yup.boolean().typeError('O campo de nome [armor_penalty] deve ser true ou false, 0 ou 1'),
+    type: yup.string().min(3, 'O campo de tipo [type]  deve ter no mínimo 3 caracteres'),
+    trained: yup.boolean().typeError('O campo de treinado [trained] deve ser true ou false, 0 ou 1'),
+    armorPenalty: yup
+      .boolean()
+      .typeError('O campo de penalidade de armadura [armor_penalty] deve ser true ou false, 0 ou 1'),
   });
 
   private _defaultYupOptions = {
