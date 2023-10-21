@@ -16,6 +16,7 @@ interface NormalizedWeapon {
   melee: boolean;
   attack_range?: number;
   damage_type?: number;
+  description?: string;
   spaces: number;
   category?: number;
   hold_type?: number;

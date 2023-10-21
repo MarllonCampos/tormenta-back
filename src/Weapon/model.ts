@@ -8,6 +8,7 @@ export interface weaponInputInterface {
   melee: boolean;
   attack_range: number;
   damage_type: number;
+  description: string;
   spaces: number;
   category: number;
   hold_type: number;
@@ -28,6 +29,7 @@ export default class WeaponDTO {
       .integer('O campo de preço [price] deve ser um inteiro')
       .required('O campo de preço [price] não deve estar vazio'),
     damage: yup.string().required('O campo de dano [damage] não deve estar vazio'),
+    description: yup.string().min(10, 'O campo de nome [description] deve ter no mínimo 3 caracteres').nullable(),
     critical: yup.string().required('O campo de crítico [critical] não deve estar vazio'),
     melee: yup.boolean().required('O campo de ataque corpo a corpo [melee] não deve estar vazio'),
     attackRange: yup.number().positive().required('O campo de alcance [attackRange] não deve estar vazio'),
@@ -52,6 +54,7 @@ export default class WeaponDTO {
     holdType: yup.number().positive(),
     default: yup.boolean(),
     img: yup.string().nullable(),
+    description: yup.string().min(10, 'O campo de nome [description] deve ter no mínimo 3 caracteres').nullable(),
   });
 
   constructor(weapon: any) {

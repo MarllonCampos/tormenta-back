@@ -17,6 +17,7 @@ class WeaponService {
     spaces: true,
     default: true,
     img: true,
+    description: true,
   };
   constructor() {
     const prisma = new PrismaClient();
