@@ -1,5 +1,6 @@
 import * as yup from 'yup';
 import { Request, Response, NextFunction } from 'express';
+import { Prisma } from '@prisma/client';
 import TraitService from './service';
 import TraitErrors from './errors';
 import TraitDTO from './model';
@@ -55,6 +56,12 @@ class TraitController {
       if (error instanceof yup.ValidationError) {
         const yupErrors = error.errors;
         return next(TraitErrors.ValidationErrors([...yupErrors]));
+      }
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.code == 'P2002')
+          return res.status(400).send({
+            message: 'Valor enviado ja existe',
+          });
       }
       next(error);
     }
