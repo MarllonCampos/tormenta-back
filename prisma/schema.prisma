@@ -121,6 +121,7 @@ model weapon {
   updated_at     DateTime       @updatedAt
   default        Boolean        @default(true)
   name           String         @db.Text
+  description    String?        @db.Text
   img            String?        @db.Text
   range          range          @relation(fields: [attack_range], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "weapon_ibfk_1")
   damagetype     damagetype     @relation(fields: [damage_type], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "weapon_ibfk_2")
