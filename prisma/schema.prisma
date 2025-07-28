@@ -8,7 +8,7 @@ generator erd {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgres"
   url      = env("DATABASE_URL")
 }
 
@@ -21,7 +21,7 @@ model attribute {
 model attributes_threat {
   threat_id    Int?
   attribute_id Int?
-  value        String     @default(dbgenerated("(_utf8mb4\\'+0\\')")) @db.Text
+  value String @default(dbgenerated("'+0'")) @db.Text
   created_at   DateTime   @default(dbgenerated("(now())")) @db.Timestamp(0)
   updated_at   DateTime   @default(dbgenerated("(now())")) @db.Timestamp(0)
   id           Int        @id @default(autoincrement())
@@ -29,17 +29,17 @@ model attributes_threat {
   attribute    attribute? @relation(fields: [attribute_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "attributes_threat_ibfk_2")
 
   @@index([attribute_id], map: "attribute_id")
-  @@index([threat_id], map: "threat_id")
+  @@index([threat_id])
 }
 
 model combatmoves {
   id          Int     @id @default(autoincrement())
-  threat_id   Int?
+  threat_id   Int?    @unique
   title       String? @db.Text
   description String? @db.Text
   threat      threat? @relation(fields: [threat_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "combatmoves_ibfk_1")
 
-  @@index([threat_id], map: "threat_id")
+  @@index([threat_id])
 }
 
 model combatrole {
@@ -74,11 +74,11 @@ model mastery {
 }
 
 model threat {
-  id                Int                 @id @default(autoincrement())
+  id                Int                 @id @default(autoincrement()) @unique
   name              String              @db.Text
   created_at        DateTime            @default(dbgenerated("(now())")) @db.Timestamp(0)
   updated_at        DateTime            @default(dbgenerated("(now())")) @db.Timestamp(0)
-  difficulty        Float               @db.Float
+  difficulty        Float               @db.Real
   description       String?             @db.Text
   combat_role       Int?
   creature_size     Int?
@@ -108,13 +108,13 @@ model trait {
 
 model weapon {
   id             Int            @id @default(autoincrement())
-  price          Float          @db.Float
+  price          Float          @db.Real
   damage         String         @db.Text
   critical       String         @db.Text
   melee          Boolean
   attack_range   Int
   damage_type    Int
-  spaces         Float          @db.Float
+  spaces         Float          @db.Real
   category       Int
   hold_type      Int
   created_at     DateTime       @default(dbgenerated("(now())")) @db.Timestamp(0)
